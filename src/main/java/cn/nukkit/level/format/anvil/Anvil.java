@@ -10,9 +10,7 @@ import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.FullChunkDataPacket;
 import cn.nukkit.scheduler.AsyncTask;
-import cn.nukkit.utils.Binary;
-import cn.nukkit.utils.BinaryStream;
-import cn.nukkit.utils.ChunkException;
+import cn.nukkit.utils.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -103,11 +101,11 @@ public class Anvil extends BaseLevelProvider {
     }
 
     public static int getRegionIndexX(int chunkX) {
-        return chunkX >> 5;
+        return chunkX >> 8;
     }
 
     public static int getRegionIndexZ(int chunkZ) {
-        return chunkZ >> 5;
+        return chunkZ >> 8;
     }
 
     @Override
@@ -170,7 +168,7 @@ public class Anvil extends BaseLevelProvider {
         if (extraData != null) {
             stream.put(extraData.getBuffer());
         } else {
-            stream.putLInt(0);
+            stream.putInt(0);
         }
         stream.put(blockEntities);
 
@@ -347,7 +345,7 @@ public class Anvil extends BaseLevelProvider {
 
     @Override
     public boolean isChunkGenerated(int chunkX, int chunkZ) {
-        RegionLoader region = this.getRegion(chunkX >> 5, chunkZ >> 5);
+        RegionLoader region = this.getRegion(chunkX >> 8, chunkZ >> 8);
         return region != null && region.chunkExists(chunkX - region.getX() * 32, chunkZ - region.getZ() * 32) && this.getChunk(chunkX - region.getX() * 32, chunkZ - region.getZ() * 32, true).isGenerated();
     }
 
