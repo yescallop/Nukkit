@@ -63,6 +63,8 @@ import cn.nukkit.plugin.JavaPluginLoader;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginLoadOrder;
 import cn.nukkit.plugin.PluginManager;
+import cn.nukkit.plugin.service.NKServiceManager;
+import cn.nukkit.plugin.service.ServiceManager;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.potion.Potion;
 import cn.nukkit.scheduler.FileWriteTask;
@@ -182,6 +184,8 @@ public class Server {
 
     private final Map<Integer, Level> levels = new HashMap<>();
 
+    private final ServiceManager serviceManager = new NKServiceManager();
+
     private Level defaultLevel = null;
 
     public Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -252,7 +256,7 @@ public class Server {
                 put("motd", "Nukkit Server For Minecraft: PE");
                 put("server-port", 19132);
                 put("server-ip", "0.0.0.0");
-                put("view-distance", 10);
+                put("view-distance", 22);
                 put("white-list", false);
                 put("announce-player-achievements", true);
                 put("spawn-protection", 16);
@@ -1138,7 +1142,7 @@ public class Server {
     }
 
     public int getViewDistance() {
-        return this.getPropertyInt("view-distance", 10);
+        return this.getPropertyInt("view-distance", 22);
     }
 
     public String getIp() {
@@ -1584,6 +1588,10 @@ public class Server {
     }
 
     public boolean generateLevel(String name, long seed, Class<? extends Generator> generator, Map<String, Object> options) {
+        return generateLevel(name, seed, generator, options, null);
+    }
+
+    public boolean generateLevel(String name, long seed, Class<? extends Generator> generator, Map<String, Object> options, Class<? extends LevelProvider> provider) {
         if (Objects.equals(name.trim(), "") || this.isLevelGenerated(name)) {
             return false;
         }
@@ -1596,11 +1604,12 @@ public class Server {
             generator = Generator.getGenerator(this.getLevelType());
         }
 
-        Class<? extends LevelProvider> provider;
-        String providerName;
-        if ((provider = LevelProviderManager.getProviderByName
-                (providerName = (String) this.getConfig("level-settings.default-format", "mcregion"))) == null) {
-            provider = LevelProviderManager.getProviderByName(providerName = "mcregion");
+        if (provider == null) { 
+            String providerName;
+            if ((provider = LevelProviderManager.getProviderByName
+                    (providerName = (String) this.getConfig("level-settings.default-format", "anvil"))) == null) {
+                provider = LevelProviderManager.getProviderByName(providerName = "anvil");
+            }
         }
 
         Level level;
@@ -1825,6 +1834,10 @@ public class Server {
 
     public void reloadWhitelist() {
         this.whitelist.reload();
+    }
+
+    public ServiceManager getServiceManager() {
+        return serviceManager;
     }
 
     public Map<String, List<String>> getCommandAliases() {

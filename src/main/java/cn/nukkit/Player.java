@@ -649,10 +649,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void sendChunk(int x, int z, byte[] payload) {
-        this.sendChunk(x, z, payload, FullChunkDataPacket.ORDER_COLUMNS);
-    }
-
-    public void sendChunk(int x, int z, byte[] payload, byte ordering) {
         if (!this.connected) {
             return;
         }
@@ -663,7 +659,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         FullChunkDataPacket pk = new FullChunkDataPacket();
         pk.chunkX = x;
         pk.chunkZ = z;
-        pk.order = ordering;
         pk.data = payload;
 
         this.batchDataPacket(pk);
@@ -3830,7 +3825,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         if (!ev.getKeepInventory()) {
             for (Item item : ev.getDrops()) {
-                this.level.dropItem(this, item);
+                this.level.dropItem(this, item, null, true, 40);
             }
 
             if (this.inventory != null) {
@@ -3899,12 +3894,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public static int calculateRequireExperience(int level) {
-        if (level < 16) {
-            return 2 * level + 7;
-        } else if (level >= 17 && level <= 31) {
-            return 5 * level - 38;
+        if (level >= 30) {
+            return 112 + (level - 30) * 9;
+        } else if (level >= 15) {
+            return 37 + (level - 15) * 5;
         } else {
-            return 9 * level - 158;
+            return 7 + level * 2;
         }
     }
 
@@ -4287,14 +4282,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
 
     public static BatchPacket getChunkCacheFromData(int chunkX, int chunkZ, byte[] payload) {
-        return getChunkCacheFromData(chunkX, chunkZ, payload, FullChunkDataPacket.ORDER_COLUMNS);
-    }
-
-    public static BatchPacket getChunkCacheFromData(int chunkX, int chunkZ, byte[] payload, byte ordering) {
         FullChunkDataPacket pk = new FullChunkDataPacket();
         pk.chunkX = chunkX;
         pk.chunkZ = chunkZ;
-        pk.order = ordering;
         pk.data = payload;
         pk.encode();
 
