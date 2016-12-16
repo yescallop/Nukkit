@@ -102,6 +102,16 @@ public abstract class EntityHumanType extends EntityCreature implements Inventor
                 }
             }
         }
+
+        this.namedTag.putList(new ListTag<CompoundTag>("EnderItems"));
+        if (this.enderChestInventory != null) {
+            for (int slot = 0; slot < 27; ++slot) {
+                Item item = this.enderChestInventory.getItem(slot);
+                if (item != null && item.getId() != Item.AIR) {
+                    this.namedTag.getList("EnderItems", CompoundTag.class).add(NBTIO.putItemHelper(item, slot));
+                }
+            }
+        }
     }
 
     @Override
