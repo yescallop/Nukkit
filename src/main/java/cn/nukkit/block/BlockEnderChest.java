@@ -11,10 +11,14 @@ import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.BlockColor;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class BlockEnderChest extends BlockTransparent {
+
+    private Set<Player> viewers = new HashSet<>();
 
     public BlockEnderChest() {
         this(0);
@@ -127,7 +131,8 @@ public class BlockEnderChest extends BlockTransparent {
                 }
             }
 
-            //TODO: Open
+            player.setViewingEnderChest(this);
+            player.addWindow(player.getEnderChestInventory());
         }
 
         return true;
@@ -135,7 +140,7 @@ public class BlockEnderChest extends BlockTransparent {
 
     @Override
     public int[][] getDrops(Item item) {
-        if (item.isPickaxe() && item.getTier() >= ItemTool.TIER_DIAMOND) {
+        if (item.isPickaxe() && item.getTier() >= ItemTool.TIER_WOODEN) {
             return new int[][]{
                     {Item.OBSIDIAN, 0, 8}
             };
@@ -147,5 +152,9 @@ public class BlockEnderChest extends BlockTransparent {
     @Override
     public BlockColor getColor() {
         return BlockColor.OBSIDIAN_BLOCK_COLOR;
+    }
+
+    public Set<Player> getViewers() {
+        return viewers;
     }
 }

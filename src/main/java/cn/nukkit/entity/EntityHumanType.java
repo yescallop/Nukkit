@@ -5,6 +5,7 @@ import cn.nukkit.block.BlockAir;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.inventory.InventoryHolder;
+import cn.nukkit.inventory.PlayerEnderChestInventory;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
@@ -19,6 +20,7 @@ import java.util.Random;
 public abstract class EntityHumanType extends EntityCreature implements InventoryHolder {
 
     protected PlayerInventory inventory;
+    protected PlayerEnderChestInventory enderChestInventory;
 
     public EntityHumanType(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -27,6 +29,10 @@ public abstract class EntityHumanType extends EntityCreature implements Inventor
     @Override
     public PlayerInventory getInventory() {
         return inventory;
+    }
+
+    public PlayerEnderChestInventory getEnderChestInventory() {
+        return enderChestInventory;
     }
 
     @Override
@@ -44,6 +50,15 @@ public abstract class EntityHumanType extends EntityCreature implements Inventor
                 } else {
                     this.inventory.setItem(slot - 9, NBTIO.getItemHelper(item));
                 }
+            }
+        }
+
+        this.enderChestInventory = new PlayerEnderChestInventory(this);
+
+        if (this.namedTag.contains("EnderItems") && this.namedTag.get("EnderItems") instanceof ListTag) {
+            ListTag<CompoundTag> inventoryList = this.namedTag.getList("EnderItems", CompoundTag.class);
+            for (CompoundTag item : inventoryList.getAll()) {
+                this.enderChestInventory.setItem(item.getByte("Slot"), NBTIO.getItemHelper(item));
             }
         }
 
