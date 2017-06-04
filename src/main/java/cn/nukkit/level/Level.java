@@ -490,7 +490,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void addLevelSoundEvent(byte type, int pitch, int data, Vector3 pos, Collection<Player> players, boolean unknown, boolean disableRelativeVolume) {
         LevelSoundEventPacket pk = new LevelSoundEventPacket();
-        pk.type = type;
+        pk.sound = type;
         pk.pitch = pitch;
         pk.extraData = data;
         pk.x = (float) pos.x;
@@ -675,13 +675,11 @@ public class Level implements ChunkManager, Metadatable {
         if (this.stopTime) {
             SetTimePacket pk0 = new SetTimePacket();
             pk0.time = (int) this.time;
-            pk0.started = true;
             player.dataPacket(pk0);
         }
 
         SetTimePacket pk = new SetTimePacket();
         pk.time = (int) this.time;
-        pk.started = !this.stopTime;
 
         player.dataPacket(pk);
     }
@@ -690,13 +688,11 @@ public class Level implements ChunkManager, Metadatable {
         if (this.stopTime) {
             SetTimePacket pk0 = new SetTimePacket();
             pk0.time = (int) this.time;
-            pk0.started = true;
             Server.broadcastPacket(this.players.values().stream().toArray(Player[]::new), pk0);
         }
 
         SetTimePacket pk = new SetTimePacket();
         pk.time = (int) this.time;
-        pk.started = !this.stopTime;
 
         Server.broadcastPacket(this.players.values().stream().toArray(Player[]::new), pk);
     }
@@ -1829,11 +1825,7 @@ public class Level implements ChunkManager, Metadatable {
         } else if (!target.isBreakable(item)) {
             return null;
         } else {
-            int[][] d = target.getDrops(item);
-            drops = new Item[d.length];
-            for (int i = 0; i < d.length; i++) {
-                drops[i] = Item.get(d[i][0], d[i][1], d[i][2]);
-            }
+            drops = target.getDrops(item);
         }
 
         Block above = this.getBlock(new Vector3(target.x, target.y + 1, target.z));
@@ -1948,6 +1940,10 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public Item useItemOn(Vector3 vector, Item item, BlockFace face, float fx, float fy, float fz, Player player) {
+        return this.useItemOn(vector, item, face, fx, fy, fz, player, false);
+    }
+
+    public Item useItemOn(Vector3 vector, Item item, BlockFace face, float fx, float fy, float fz, Player player, boolean playSound) {
         Block target = this.getBlock(vector);
         Block block = target.getSide(face);
 
@@ -2085,6 +2081,10 @@ public class Level implements ChunkManager, Metadatable {
             if (!player.isCreative()) {
                 item.setCount(item.getCount() - 1);
             }
+        }
+
+        if (playSound) {
+            this.addSound(new BlockPlaceSound(hand, hand.getId()));
         }
 
         if (item.getCount() <= 0) {
@@ -2353,18 +2353,20 @@ public class Level implements ChunkManager, Metadatable {
 
             Map<Long, BlockEntity> oldBlockEntities = oldChunk != null ? oldChunk.getBlockEntities() : new HashMap<>();
 
-            this.provider.setChunk(chunkX, chunkZ, chunk);
-            this.chunks.put(index, chunk);
-
             for (Entity entity : oldEntities.values()) {
                 chunk.addEntity(entity);
+                oldChunk.removeEntity(entity);
                 entity.chunk = chunk;
             }
 
             for (BlockEntity blockEntity : oldBlockEntities.values()) {
                 chunk.addBlockEntity(blockEntity);
+                oldChunk.removeBlockEntity(blockEntity);
                 blockEntity.chunk = chunk;
             }
+
+            this.provider.setChunk(chunkX, chunkZ, chunk);
+            this.chunks.put(index, chunk);
         }
 
         this.chunkCache.remove(index);
