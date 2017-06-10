@@ -10,6 +10,7 @@ import cn.nukkit.entity.data.*;
 import cn.nukkit.event.entity.*;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.event.player.PlayerInteractEvent;
+import cn.nukkit.event.player.PlayerInteractEvent.Action;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
@@ -571,7 +572,7 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public Effect getEffect(int effectId) {
-        return this.effects.containsKey(effectId) ? this.effects.get(effectId) : null;
+        return this.effects.getOrDefault(effectId, null);
     }
 
     public boolean hasEffect(int effectId) {
@@ -1252,7 +1253,7 @@ public abstract class Entity extends Location implements Metadatable {
             if (down == Item.FARMLAND) {
                 if (this instanceof Player) {
                     Player p = (Player) this;
-                    PlayerInteractEvent ev = new PlayerInteractEvent(p, p.getInventory().getItemInHand(), this.temporalVector.setComponents(v.x, v.y, v.z), null, PlayerInteractEvent.PHYSICAL);
+                    PlayerInteractEvent ev = new PlayerInteractEvent(p, p.getInventory().getItemInHand(), this.temporalVector.setComponents(v.x, v.y, v.z), null, Action.PHYSICAL);
                     this.server.getPluginManager().callEvent(ev);
                     if (ev.isCancelled()) {
                         return;
@@ -1859,7 +1860,7 @@ public abstract class Entity extends Location implements Metadatable {
                 this.setDataProperty(new ByteEntityData(propertyId, flags));
             } else {
                 long flags = this.getDataPropertyLong(propertyId);
-                flags ^= 1 << id;
+                flags ^= 1L << id;
                 this.setDataProperty(new LongEntityData(propertyId, flags));
             }
 
@@ -1867,7 +1868,7 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public boolean getDataFlag(int propertyId, int id) {
-        return (((propertyId == EntityHuman.DATA_PLAYER_FLAGS ? this.getDataPropertyByte(propertyId) & 0xff : this.getDataPropertyLong(propertyId))) & (1 << id)) > 0;
+        return (((propertyId == EntityHuman.DATA_PLAYER_FLAGS ? this.getDataPropertyByte(propertyId) & 0xff : this.getDataPropertyLong(propertyId))) & (1L << id)) > 0;
     }
 
     @Override

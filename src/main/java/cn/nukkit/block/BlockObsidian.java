@@ -35,7 +35,7 @@ public class BlockObsidian extends BlockSolid {
 
     @Override
     public double getHardness() {
-        return 35;
+        return 50;
     }
 
     @Override
@@ -77,6 +77,11 @@ public class BlockObsidian extends BlockSolid {
 
     @Override
     public boolean canBePushed() {
+        return false;
+    }
+
+    @Override
+    public boolean canHarvestWithHand() {
         return false;
     }
 }
