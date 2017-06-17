@@ -30,6 +30,11 @@ public class ItemBlock extends Item {
     }
 
     @Override
+    public int getMaxStackSize() {
+        return this.block.getMaxStackSize();
+    }
+
+    @Override
     public ItemBlock clone() {
         ItemBlock block = (ItemBlock) super.clone();
         block.block = this.block.clone();

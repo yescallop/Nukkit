@@ -802,6 +802,10 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
         this.meta = (meta == null ? 0 : meta & 0x0f);
     }
 
+    public int getMaxStackSize() {
+        return 64;
+    }
+
     final public void position(Position v) {
         this.x = (int) v.x;
         this.y = (int) v.y;

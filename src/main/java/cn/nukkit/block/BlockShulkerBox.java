@@ -12,7 +12,7 @@ import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.DyeColor;
 
-import java.util.Map;
+import java.util.*;
 
 public class BlockShulkerBox extends BlockTransparent {
 
@@ -113,6 +113,11 @@ public class BlockShulkerBox extends BlockTransparent {
     }
 
     @Override
+    public int getMaxStackSize() {
+        return 1;
+    }
+
+    @Override
     public Item toItem() {
         Item item = Item.get(Item.SHULKER_BOX, this.meta, 1);
         BlockEntity blockEntity = this.level.getBlockEntity(this);
@@ -121,6 +126,11 @@ public class BlockShulkerBox extends BlockTransparent {
                 item.setCustomName(blockEntity.getName());
             }
             item.setCustomBlockData(blockEntity.getCleanedNBT());
+            List<String> lore = new ArrayList<>();
+            for (Item i : ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values()) {
+                lore.add(i.getName() + " x" + i.getCount());
+            }
+            item.setLore(lore.stream().toArray(String[]::new));
         }
         return item;
     }
