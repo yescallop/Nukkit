@@ -117,7 +117,9 @@ public class BlockShulkerBox extends BlockTransparent {
         Item item = Item.get(Item.SHULKER_BOX, this.meta, 1);
         BlockEntity blockEntity = this.level.getBlockEntity(this);
         if (blockEntity instanceof BlockEntityShulkerBox) {
-            item.setCustomName(blockEntity.getName());
+            if (((BlockEntityShulkerBox) blockEntity).hasName()) {
+                item.setCustomName(blockEntity.getName());
+            }
             item.setCustomBlockData(blockEntity.getCleanedNBT());
         }
         return item;
