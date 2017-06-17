@@ -108,6 +108,11 @@ public class BlockShulkerBox extends BlockTransparent {
     }
 
     @Override
+    public Item[] getDrops(Item item) {
+        return new Item[0];
+    }
+
+    @Override
     public Item toItem() {
         Item item = Item.get(Item.SHULKER_BOX, this.meta, 1);
         BlockEntity blockEntity = this.level.getBlockEntity(this);

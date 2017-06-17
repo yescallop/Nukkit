@@ -5,6 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.block.*;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityChest;
+import cn.nukkit.blockentity.BlockEntityShulkerBox;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.entity.item.EntityXPOrb;
@@ -1873,8 +1874,12 @@ public class Level implements ChunkManager, Metadatable {
                     ((BlockEntityChest) blockEntity).unpair();
                 }
 
-                for (Item chestItem : ((InventoryHolder) blockEntity).getInventory().getContents().values()) {
-                    this.dropItem(target, chestItem);
+                if (!(blockEntity instanceof BlockEntityShulkerBox)) {
+                    for (Item chestItem : ((InventoryHolder) blockEntity).getInventory().getContents().values()) {
+                        this.dropItem(target, chestItem);
+                    }
+                } else if (!(player.isCreative() && ((InventoryHolder) blockEntity).getInventory().isEmpty())) {
+                    this.dropItem(target, target.toItem());
                 }
             }
 
@@ -1898,7 +1903,7 @@ public class Level implements ChunkManager, Metadatable {
             }
         }
 
-        if (target instanceof BlockShulkerBox || player == null || player.isSurvival()) {
+        if (player == null || player.isSurvival()) {
             for (Item drop : drops) {
                 if (drop.getCount() > 0) {
                     this.dropItem(vector.add(0.5, 0.5, 0.5), drop);
