@@ -7,6 +7,7 @@ package cn.nukkit.inventory;
 public enum InventoryType {
     CHEST(27, "Chest", 0),
     ENDER_CHEST(27, "Ender Chest", 0),
+    SHULKER_BOX(27, "Shulker Box", 0),
     DOUBLE_CHEST(27 + 27, "Double Chest", 0),
     PLAYER(40, "Player", 0), //36 CONTAINER, 4 ARMOR
     FURNACE(3, "Furnace", 2),

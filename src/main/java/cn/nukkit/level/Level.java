@@ -1898,7 +1898,7 @@ public class Level implements ChunkManager, Metadatable {
             }
         }
 
-        if (player == null || player.isSurvival()) {
+        if (target instanceof BlockShulkerBox || player == null || player.isSurvival()) {
             for (Item drop : drops) {
                 if (drop.getCount() > 0) {
                     this.dropItem(vector.add(0.5, 0.5, 0.5), drop);

@@ -184,7 +184,7 @@ public class BlockBed extends BlockTransparent {
 
     @Override
     public Item toItem() {
-        return new ItemBed(this.getDyeColor().getWoolData());
+        return new ItemBed(this.getDyeColor().getDyedData());
     }
 
     @Override

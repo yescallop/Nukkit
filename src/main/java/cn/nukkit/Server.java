@@ -1954,6 +1954,7 @@ public class Server {
         BlockEntity.registerBlockEntity(BlockEntity.COMPARATOR, BlockEntityComparator.class);
         BlockEntity.registerBlockEntity(BlockEntity.HOPPER, BlockEntityHopper.class);
         BlockEntity.registerBlockEntity(BlockEntity.BED, BlockEntityBed.class);
+        BlockEntity.registerBlockEntity(BlockEntity.SHULKER_BOX, BlockEntityShulkerBox.class);
     }
 
     public static Server getInstance() {

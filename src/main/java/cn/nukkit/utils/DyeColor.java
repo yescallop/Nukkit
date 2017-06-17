@@ -22,17 +22,17 @@ public enum DyeColor {
 
 
     private int dyeColorMeta;
-    private int woolColorMeta;
+    private int dyedColorMeta;
     private String colorName;
     private BlockColor blockColor;
 
 
-    private final static DyeColor[] BY_WOOL_DATA;
+    private final static DyeColor[] BY_DYED_DATA;
     private final static DyeColor[] BY_DYE_DATA;
 
-    DyeColor(int dyeColorMeta, int woolColorMeta, String colorName, BlockColor blockColor) {
+    DyeColor(int dyeColorMeta, int dyedColorMeta, String colorName, BlockColor blockColor) {
         this.dyeColorMeta = dyeColorMeta;
-        this.woolColorMeta = woolColorMeta;
+        this.dyedColorMeta = dyedColorMeta;
         this.colorName = colorName;
         this.blockColor = blockColor;
     }
@@ -45,8 +45,8 @@ public enum DyeColor {
         return this.dyeColorMeta;
     }
 
-    public int getWoolData() {
-        return this.woolColorMeta;
+    public int getDyedData() {
+        return this.dyedColorMeta;
     }
 
     public String getName() {
@@ -55,10 +55,10 @@ public enum DyeColor {
 
     static {
         BY_DYE_DATA = values();
-        BY_WOOL_DATA = values();
+        BY_DYED_DATA = values();
 
         for (DyeColor color : values()) {
-            BY_WOOL_DATA[color.woolColorMeta & 0x0f] = color;
+            BY_DYED_DATA[color.dyedColorMeta & 0x0f] = color;
             BY_DYE_DATA[color.dyeColorMeta & 0x0f] = color;
         }
     }
@@ -67,8 +67,8 @@ public enum DyeColor {
         return BY_DYE_DATA[dyeColorMeta & 0x0f];
     }
 
-    public static DyeColor getByWoolData(int woolColorMeta) {
-        return BY_WOOL_DATA[woolColorMeta & 0x0f];
+    public static DyeColor getByDyedData(int dyedColorMeta) {
+        return BY_DYED_DATA[dyedColorMeta & 0x0f];
     }
 
 

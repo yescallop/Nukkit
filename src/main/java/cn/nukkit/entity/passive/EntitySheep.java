@@ -1,11 +1,9 @@
 package cn.nukkit.entity.passive;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.BlockWool;
 import cn.nukkit.entity.data.ByteEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemDye;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -89,7 +87,7 @@ public class EntitySheep extends EntityAnimal {
     @Override
     public boolean onInteract(Player player, Item item) {
         if (item.getId() == Item.DYE) {
-            this.setColor(((ItemDye) item).getDyeColor().getWoolData());
+            this.setColor(((ItemDye) item).getDyeColor().getDyedData());
             return true;
         }
 
@@ -131,13 +129,13 @@ public class EntitySheep extends EntityAnimal {
         double rand = random.nextDouble(1, 100);
 
         if (rand <= 0.164) {
-            return DyeColor.PINK.getWoolData();
+            return DyeColor.PINK.getDyedData();
         }
 
         if (rand <= 15) {
-            return random.nextBoolean() ? DyeColor.BLACK.getWoolData() : random.nextBoolean() ? DyeColor.GRAY.getWoolData() : DyeColor.LIGHT_GRAY.getWoolData();
+            return random.nextBoolean() ? DyeColor.BLACK.getDyedData() : random.nextBoolean() ? DyeColor.GRAY.getDyedData() : DyeColor.LIGHT_GRAY.getDyedData();
         }
 
-        return DyeColor.WHITE.getWoolData();
+        return DyeColor.WHITE.getDyedData();
     }
 }
