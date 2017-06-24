@@ -131,7 +131,7 @@ public class AdventureSettings implements Cloneable {
         pk.noPvm = noPvm;
         pk.noMvp = noMvp;
         pk.muted = muted;
-        pk.userPermission = (this.player.isOp() ? PERMISSION_OPERATOR : PERMISSION_NORMAL);
+        pk.userPermission = 0;
         player.dataPacket(pk);
 
         player.resetInAirTicks();
