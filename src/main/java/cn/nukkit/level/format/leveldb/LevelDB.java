@@ -509,12 +509,17 @@ public class LevelDB implements LevelProvider {
     
     @Override
     public GameRules getGamerules() {
-        return level.gameRules;
+        GameRules rules = new GameRules();
+
+        if (this.levelData.contains("GameRules"))
+            rules.readNBT(this.levelData.getCompound("GameRules"));
+
+        return rules;
     }
 
     @Override
     public void setGameRules(GameRules rules) {
-        level.gameRules = rules;
+        this.levelData.putCompound("GameRules", rules.writeNBT());
     }
 
     @Override
