@@ -1878,8 +1878,6 @@ public class Level implements ChunkManager, Metadatable {
                     for (Item chestItem : ((InventoryHolder) blockEntity).getInventory().getContents().values()) {
                         this.dropItem(target, chestItem);
                     }
-                } else if (!(player.isCreative() && ((InventoryHolder) blockEntity).getInventory().isEmpty())) {
-                    this.dropItem(target, target.toItem());
                 }
             }
 
