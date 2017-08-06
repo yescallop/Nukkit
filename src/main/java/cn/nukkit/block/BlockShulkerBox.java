@@ -4,20 +4,23 @@ import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityShulkerBox;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.DyeColor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class BlockShulkerBox extends BlockTransparent {
 
     public BlockShulkerBox() {
-        this(0);
+        this(DyeColor.PURPLE.getDyedData());
     }
 
     public BlockShulkerBox(int meta) {
@@ -50,6 +53,11 @@ public class BlockShulkerBox extends BlockTransparent {
     }
 
     @Override
+    public int getToolType() {
+        return ItemTool.TYPE_PICKAXE;
+    }
+
+    @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
         this.getLevel().setBlock(block, this, true, true);
         CompoundTag nbt = new CompoundTag("")
@@ -57,6 +65,10 @@ public class BlockShulkerBox extends BlockTransparent {
                 .putInt("x", (int) this.x)
                 .putInt("y", (int) this.y)
                 .putInt("z", (int) this.z);
+
+        if (item.getNamedTag() != null && item.getNamedTag().contains("List")){
+        	nbt.putList(item.getNamedTag().getList("Items"));
+        }
 
         if (item.hasCustomName()) {
             nbt.putString("CustomName", item.getCustomName());
@@ -87,7 +99,6 @@ public class BlockShulkerBox extends BlockTransparent {
                 shulkerBox = (BlockEntityShulkerBox) t;
             } else {
                 CompoundTag nbt = new CompoundTag("")
-                        .putList(new ListTag<>("Items"))
                         .putString("id", BlockEntity.SHULKER_BOX)
                         .putInt("x", (int) this.x)
                         .putInt("y", (int) this.y)
@@ -109,7 +120,9 @@ public class BlockShulkerBox extends BlockTransparent {
 
     @Override
     public Item[] getDrops(Item item) {
-        return new Item[0];
+        return new Item[]{
+                this.toItem()
+        };
     }
 
     @Override
@@ -119,16 +132,20 @@ public class BlockShulkerBox extends BlockTransparent {
 
     @Override
     public Item toItem() {
-        Item item = Item.get(Item.SHULKER_BOX, this.meta, 1);
+        Item item = Item.get(Item.SHULKER_BOX, this.meta);
         BlockEntity blockEntity = this.level.getBlockEntity(this);
         if (blockEntity instanceof BlockEntityShulkerBox) {
-            if (((BlockEntityShulkerBox) blockEntity).hasName()) {
-                item.setCustomName(blockEntity.getName());
-            }
-            item.setCustomBlockData(blockEntity.getCleanedNBT());
+            item.setNamedTag(blockEntity.namedTag);
             List<String> lore = new ArrayList<>();
-            for (Item i : ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values()) {
+            int count = 0;
+            Collection<Item> items = ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values();
+            for (Item i : items) {
                 lore.add(i.getName() + " x" + i.getCount());
+                ++count;
+                if (count == 5 && items.size() - count > 0) {
+                    lore.add("and " + (items.size() - count) + " more...");
+                    break;
+                }
             }
             item.setLore(lore.stream().toArray(String[]::new));
         }
