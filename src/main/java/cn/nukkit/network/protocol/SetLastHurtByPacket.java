@@ -1,6 +1,8 @@
 package cn.nukkit.network.protocol;
 
 public class SetLastHurtByPacket extends DataPacket {
+    
+    public int entityTypeId;
 
     @Override
     public byte pid() {
@@ -9,11 +11,13 @@ public class SetLastHurtByPacket extends DataPacket {
 
     @Override
     public void decode() {
+        this.entityTypeId = this.getVarInt();
 
     }
 
     @Override
     public void encode() {
-        //TODO
+        this.reset();
+        this.putVarInt(this.entityTypeId);
     }
 }

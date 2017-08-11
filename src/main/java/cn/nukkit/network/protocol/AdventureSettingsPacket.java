@@ -5,7 +5,7 @@ package cn.nukkit.network.protocol;
  */
 public class AdventureSettingsPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.ADVENTURE_SETTINGS_PACKET;
-
+    
     public static final int ACTION_FLAG_PROHIBIT_ALL = 0;
     public static final int ACTION_FLAG_BUILD_AND_MINE = 1;
     public static final int ACTION_FLAG_DOORS_AND_SWITCHES = 2;
@@ -16,7 +16,7 @@ public class AdventureSettingsPacket extends DataPacket {
     public static final int ACTION_FLAG_TELEPORT = 64;
     public static final int ACTION_FLAG_DEFAULT_LEVEL_PERMISSIONS = 128;
     public static final int ACTION_FLAG_ALLOW_ALL = 511;
-
+ 
     public static final int PERMISSION_LEVEL_VISITOR = 0;
     public static final int PERMISSION_LEVEL_MEMBER = 1;
     public static final int PERMISSION_LEVEL_OPERATOR = 2;
@@ -52,7 +52,7 @@ public class AdventureSettingsPacket extends DataPacket {
     public int userPermission;
     public int actionPermissions = ACTION_FLAG_DEFAULT_LEVEL_PERMISSIONS;
 	public int permissionLevel = PERMISSION_LEVEL_MEMBER;
-	public long userId = 0;
+	public long entityUniqueId;
 
     @Override
     public void decode() {
@@ -89,10 +89,10 @@ public class AdventureSettingsPacket extends DataPacket {
         this.putUnsignedVarInt(this.userPermission);
         this.putUnsignedVarInt(this.actionPermissions);
         this.putUnsignedVarInt(this.permissionLevel);
-        if ((this.userId & 0x01) != 0) {
-            this.putLLong(-1 * ((this.userId + 1) >> 1));
+        if ((this.entityUniqueId & 0x01) != 0) {
+            this.putLLong(-1 * ((this.entityUniqueId + 1) >> 1));
         } else {
-            this.putLLong(this.userId >> 1);
+            this.putLLong(this.entityUniqueId >> 1);
         }
     }
 
