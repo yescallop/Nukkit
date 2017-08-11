@@ -11,7 +11,7 @@ public class AddBehaviorTreePacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.getString(this.unknown);
+        this.unknown = this.getString();
     }
 
     @Override

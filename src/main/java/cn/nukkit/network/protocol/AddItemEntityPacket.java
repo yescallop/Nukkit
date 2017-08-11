@@ -2,6 +2,7 @@ package cn.nukkit.network.protocol;
 
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.item.Item;
+import cn.nukkit.math.Vector3f;
 import cn.nukkit.utils.Binary;
 
 /**
@@ -22,21 +23,29 @@ public class AddItemEntityPacket extends DataPacket {
     public float x;
     public float y;
     public float z;
-    public float speedX;
-    public float speedY;
-    public float speedZ;
+    public float speedX = 0.0f;
+    public float speedY = 0.0f;
+    public float speedZ = 0.0f;
     public EntityMetadata metadata = new EntityMetadata();
 
     @Override
     public void decode() {
-
+        this.entityUniqueId = this.getVarLong();
+        this.entityRuntimeId = this.getUnsignedVarLong();
+        this.item = this.getSlot();
+        Vector3f v = this.getVector3f();
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+        v.add(this.speedX, this.speedY, this.speedZ);
+        this.metadata = Binary.readMetadata(this.getByteArray());
     }
 
     @Override
     public void encode() {
         this.reset();
         this.putVarLong(this.entityUniqueId);
-        this.putVarLong(this.entityRuntimeId);
+        this.putUnsignedVarLong(this.entityRuntimeId);
         this.putSlot(this.item);
         this.putVector3f(this.x, this.y, this.z);
         this.putVector3f(this.speedX, this.speedY, this.speedZ);

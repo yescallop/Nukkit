@@ -1,14 +1,11 @@
 package cn.nukkit.utils;
 
-import cn.nukkit.block.Block;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.item.Item;
 import cn.nukkit.math.BlockVector3;
-import cn.nukkit.math.Vector3;
 import cn.nukkit.math.Vector3f;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -208,7 +205,7 @@ public class BinaryStream {
      * Reads a list of Attributes from the stream.
      * @return Attribute[]
      */
-    public Attribute[] getAttributeList() throws Exception {
+    public Attribute[] getAttributeList() {
         List<Attribute> list = new ArrayList<>();
         long count = this.getUnsignedVarInt();
 
@@ -221,7 +218,7 @@ public class BinaryStream {
                 attr.setMaxValue(this.getLFloat());
                 list.add(attr);
             }else{
-                throw new Exception("Unknown attribute type \"" + name + "\"");
+                //throw new Exception("Unknown attribute type \"" + name + "\"");
             }
         }
 
@@ -400,6 +397,13 @@ public class BinaryStream {
         rule.unknown1 = this.getBoolean();
         rule.unknown2 = this.getBoolean();
         return rule;
+    }
+
+    public Object[] getEntityLink() {
+        this.getVarInt();
+        this.getVarInt();
+        this.getByte();
+        this.getByte();
     }
 
     public void putRuleData(RuleData rule) {
