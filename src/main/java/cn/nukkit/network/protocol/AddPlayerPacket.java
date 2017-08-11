@@ -60,10 +60,10 @@ public class AddPlayerPacket extends DataPacket {
         this.item = this.getSlot();
         this.metadata = Binary.readMetadata(this.getByteArray());
 
-        this.varint1 = this.getUnsignedVarInt();
-        this.varint2 = this.getUnsignedVarInt();
-        this.varint3 = this.getUnsignedVarInt();
-        this.varint4 = this.getUnsignedVarInt();
+        this.varint1 = (int) this.getUnsignedVarInt();
+        this.varint2 = (int) this.getUnsignedVarInt();
+        this.varint3 = (int) this.getUnsignedVarInt();
+        this.varint4 = (int) this.getUnsignedVarInt();
         this.long1 = this.getLLong();
 
         int linkCount = (int) this.getUnsignedVarInt();

@@ -6,6 +6,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.Vector3f;
 
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -400,10 +401,8 @@ public class BinaryStream {
     }
 
     public Object[] getEntityLink() {
-        this.getVarInt();
-        this.getVarInt();
-        this.getByte();
-        this.getByte();
+        Object[] objects = {this.getVarInt(), this.getVarInt(), this.getByte(), this.getByte()};
+        return objects;
     }
 
     public void putRuleData(RuleData rule) {
