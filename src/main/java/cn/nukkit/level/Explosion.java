@@ -65,7 +65,7 @@ public class Explosion {
         }
 
         Vector3 vector = new Vector3(0, 0, 0);
-        Vector3 vBlock = new Vector3(0, 0, 0);
+        BlockVector3 vBlock = new BlockVector3(0, 0, 0);
 
         int mRays = this.rays - 1;
         for (int i = 0; i < this.rays; ++i) {
@@ -181,9 +181,9 @@ public class Explosion {
 
             for (BlockFace side : BlockFace.values()) {
                 Vector3 sideBlock = pos.getSide(side);
-                BlockVector3 index = Level.blockHash((int) sideBlock.x, (int) sideBlock.y, (int) sideBlock.z);
+                BlockVector3 index = new BlockVector3((int) sideBlock.x, (int) sideBlock.y, (int) sideBlock.z);
                 if (!this.affectedBlocks.contains(sideBlock) && !updateBlocks.containsKey(index)) {
-                    BlockUpdateEvent ev = new BlockUpdateEvent(this.level.getBlock(sideBlock));
+                    BlockUpdateEvent ev = new BlockUpdateEvent(this.level.getBlock(index));
                     this.level.getServer().getPluginManager().callEvent(ev);
                     if (!ev.isCancelled()) {
                         ev.getBlock().onUpdate(Level.BLOCK_UPDATE_NORMAL);
