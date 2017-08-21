@@ -88,6 +88,14 @@ public class ItemUseTransactionGroup extends BaseTransactionGroup {
 
             case ITEM_USE_ACTION_USE:
                 if (this.face >= 0 && this.face <= 5) {
+                    PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(player, i, blockVector, null, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK);
+                    Server.getInstance().getPluginManager().callEvent(playerInteractEvent);
+                    
+                    if (playerInteractEvent.isCancelled()) {
+                        inventory.sendHeldItem(player);
+                        return false;
+                    }
+                    
                     face = BlockFace.fromIndex(this.face);
                     if (player.canInteract(blockVector.add(0.5, 0.5, 0.5), player.isCreative() ? 13 : 7)) {
                         if (player.isCreative()) {
