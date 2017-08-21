@@ -92,14 +92,6 @@ public class ItemUseTransactionGroup extends BaseTransactionGroup {
                     if (player.canInteract(blockVector.add(0.5, 0.5, 0.5), player.isCreative() ? 13 : 7)) {
                         if (player.isCreative()) {
                             Item i = inventory.getItemInHand();
-                            PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(player, i, blockVector, null, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK);
-                            Server.getInstance().getPluginManager().callEvent(playerInteractEvent);
-                    
-                            if (playerInteractEvent.isCancelled()) {
-                                inventory.sendHeldItem(player);
-                                return false;
-                            }
-                            
                             if (player.level.useItemOn(blockVector, i, face, clickPos.x, clickPos.y, clickPos.z, player) != null) {
                                 return true;
                             }
@@ -107,14 +99,6 @@ public class ItemUseTransactionGroup extends BaseTransactionGroup {
                             Item i = inventory.getItemInHand();
                             Item oldItem = i.clone();
                             //TODO: Implement adventure mode checks
-                            PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(player, i, blockVector, null, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK);
-                            Server.getInstance().getPluginManager().callEvent(playerInteractEvent);
-                    
-                            if (playerInteractEvent.isCancelled()) {
-                                inventory.sendHeldItem(player);
-                                return false;
-                            }
-                            
                             if ((i = player.level.useItemOn(blockVector, i, face, clickPos.x, clickPos.y, clickPos.z, player)) != null) {
                                 if (!i.deepEquals(oldItem) || i.getCount() != oldItem.getCount()) {
                                     inventory.setItemInHand(i);
