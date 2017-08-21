@@ -4,11 +4,6 @@ import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.math.Vector3f;
 import cn.nukkit.utils.Binary;
-import cn.nukkit.utils.BinaryStream;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * author: MagicDroidX

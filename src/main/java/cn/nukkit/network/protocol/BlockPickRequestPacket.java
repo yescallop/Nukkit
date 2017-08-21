@@ -6,10 +6,11 @@ public class BlockPickRequestPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.BLOCK_PICK_REQUEST_PACKET;
 
-    public int x;
-    public int y;
-    public int z;
-    public int selectedSlot;
+    public int tileX;
+    public int tileY;
+    public int tileZ;
+    public boolean addUserData;
+    public int hotbarSlot;
 
     @Override
     public byte pid() {
@@ -19,14 +20,17 @@ public class BlockPickRequestPacket extends DataPacket {
     @Override
     public void decode() {
         BlockVector3 v = this.getBlockVector3();
-        this.x = v.x;
-        this.y = v.y;
-        this.z = v.z;
-        this.selectedSlot = this.getByte();
+        this.tileX = v.x;
+        this.tileY = v.y;
+        this.tileZ = v.z;
+        this.addUserData = this.getBoolean();
+        this.hotbarSlot = this.getByte();
     }
 
     @Override
     public void encode() {
-
+        this.putBlockVector3(this.tileX, this.tileY, this.tileZ);
+        this.putBoolean(this.addUserData);
+        this.putByte((byte) this.hotbarSlot);
     }
 }

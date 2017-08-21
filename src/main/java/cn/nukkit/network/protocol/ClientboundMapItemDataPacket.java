@@ -1,5 +1,6 @@
 package cn.nukkit.network.protocol;
 
+import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.Utils;
 
 import java.awt.*;
@@ -10,6 +11,8 @@ import java.awt.image.BufferedImage;
  */
 public class ClientboundMapItemDataPacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.CLIENTBOUND_MAP_ITEM_DATA_PACKET;
+
     public int[] eids = new int[0];
 
     public long mapId;
@@ -17,8 +20,8 @@ public class ClientboundMapItemDataPacket extends DataPacket {
     public byte scale;
     public int width;
     public int height;
-    public int offsetX;
-    public int offsetZ;
+    public int offsetX = 0;
+    public int offsetZ = 0;
 
     public MapDecorator[] decorators = new MapDecorator[0];
     public int[] colors = new int[0];
@@ -31,12 +34,76 @@ public class ClientboundMapItemDataPacket extends DataPacket {
 
     @Override
     public byte pid() {
-        return ProtocolInfo.CLIENTBOUND_MAP_ITEM_DATA_PACKET;
+        return NETWORK_ID;
     }
 
     @Override
     public void decode() {
+        this.mapId = this.getVarLong();
 
+        int update = 0;
+        if (eids.length > 0) {
+            update |= 0x08;
+        }
+        if (decorators.length > 0) {
+            update |= DECORATIONS_UPDATE;
+        }
+        if (image != null || colors.length > 0) {
+            update |= TEXTURE_UPDATE;
+        }
+        this.update = (int) this.getUnsignedVarInt();
+
+        if ((update & 0x08) != 0) { //TODO: find out what these are for
+            this.putUnsignedVarInt(eids.length);
+            for (int eid : eids) {
+                this.getVarInt(eid);
+            }
+        }
+        if ((update & (TEXTURE_UPDATE | DECORATIONS_UPDATE)) != 0) {
+            this.scale = (byte) this.getByte();
+        }
+
+        if ((update & DECORATIONS_UPDATE) != 0) {
+            this.decorators = new MapDecorator[update];
+
+            for (MapDecorator decorator : decorators) {
+                decorator.icon = (byte) this.getByte();
+                decorator.rotation = (byte) this.getByte();
+                decorator.offsetX = (byte) this.getByte();
+                decorator.offsetZ = (byte) this.getByte();
+                decorator.label = this.getString();
+                int decoratorColor = decorator.color.getRGB();
+                decoratorColor = this.getVarInt();
+            }
+        }
+
+        if ((update & TEXTURE_UPDATE) != 0) {
+            this.width = this.getVarInt();
+            this.height = this.getVarInt();
+            this.offsetX = this.getVarInt();
+            this.offsetZ = this.getVarInt();
+            int getValueSame = width * height;
+            getValueSame = this.getVarInt();
+
+            if (image != null) {
+                for (int y = 0; y < width; y++) {
+                    for (int x = 0; x < height; x++) {
+                        Color color = new Color(image.getRGB(x, y), true);
+                        byte red = (byte) color.getRed();
+                        byte green = (byte) color.getGreen();
+                        byte blue = (byte) color.getBlue();
+                        long applyColor = Utils.toRGB(red, green, blue, (byte) 0xff);
+                        applyColor = this.getUnsignedVarInt();
+                    }
+                }
+
+                image.flush();
+            } else if (colors.length > 0) {
+                for (int color : colors) {
+                    color = (int) this.getUnsignedVarInt();
+                }
+            }
+        }
     }
 
     @Override
