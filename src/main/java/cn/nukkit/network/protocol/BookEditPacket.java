@@ -1,5 +1,10 @@
 package cn.nukkit.network.protocol;
 
+/**
+ * TODO: Rework this, all it's broken.
+ * Credits: dktapps, @PM-MP
+ * (Thanks for brokens).
+ */
 public class BookEditPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.BOOK_EDIT_PACKET;

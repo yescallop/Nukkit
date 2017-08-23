@@ -34,22 +34,22 @@ public class EntityEventPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public long eid;
+    public long entityRuntimeId;
     public int event;
-    public int type;
+    public int data = 0;
 
     @Override
     public void decode() {
-        this.eid = this.getVarLong();
+        this.entityRuntimeId = this.getUnsignedVarLong();
         this.event = this.getByte();
-        this.type = this.getByte();
+        this.data = this.getVarInt();
     }
 
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.eid);
+        this.putUnsignedVarLong(this.entityRuntimeId);
         this.putByte((byte) this.event);
-        this.putByte((byte) this.type);
+        this.putVarInt(this.data);
     }
 }

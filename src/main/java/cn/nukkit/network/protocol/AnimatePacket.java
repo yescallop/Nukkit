@@ -7,10 +7,13 @@ public class AnimatePacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.ANIMATE_PACKET;
 
-    public final int ACTION_SWING_ARM = 1;
-
-    public final int ACTION_STOP_SLEEP = 3;
+    public final int ACTION_NO_ACTION = 0;
+    public final int ACTION_SWING = 1;
+    public final int ACTION_WAKEUP = 3;
     public final int ACTION_CRITICAL_HIT = 4;
+    public final int ACTION_MAGIC_CRITICAL_HIT = 5;
+    public final int ACTION_ROW_RIGHT = 128; // -> for Boat?!
+    public final int ACTION_ROW_LEFT = 129;  // ->
 
     public int action;
     public long entityRuntimeId;
@@ -32,6 +35,13 @@ public class AnimatePacket extends DataPacket {
         this.putUnsignedVarLong(this.entityRuntimeId);
         if ((this.action & 0x80) != 0) {
             this.putLFloat(this.float1);
+        }
+
+        switch (this.action) {
+            case ACTION_ROW_RIGHT:
+            case ACTION_ROW_LEFT:
+                /** todo: do it right */
+                this.putLFloat(0);
         }
     }
 

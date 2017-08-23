@@ -16,7 +16,7 @@ public class ChangeDimensionPacket extends DataPacket {
     public float y;
     public float z;
 
-    public boolean respawn; // If nether is added, check true. If nether is not added, check false.
+    public boolean respawn = false; // If nether is added, check true. If nether is not added, check false.
 
     @Override
     public void decode() {

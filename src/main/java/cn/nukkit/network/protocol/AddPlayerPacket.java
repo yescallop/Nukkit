@@ -30,8 +30,8 @@ public class AddPlayerPacket extends DataPacket {
     public float speedY = 0.0f;
     public float speedZ = 0.0f;
     public float pitch = 0.0f;
+    public float headYaw = 0.0f; // TODO: null
     public float yaw = 0.0f;
-    public float headYaw;
     public Item item;
     public EntityMetadata metadata = new EntityMetadata();
 
@@ -40,6 +40,8 @@ public class AddPlayerPacket extends DataPacket {
     public int varint2 = 0;
     public int varint3 = 0;
     public int varint4 = 0;
+    public int varint5 = 0;
+
     public long long1 = 0;
     public final Object[][] links = new Object[0][3];
 
@@ -55,8 +57,8 @@ public class AddPlayerPacket extends DataPacket {
         this.z = v.z;
         v.add(this.speedX, this.speedY, this.speedZ);
         this.pitch = this.getLFloat();
-        this.yaw = this.getLFloat();
         this.headYaw = this.getLFloat();
+        this.yaw = this.getLFloat();
         this.item = this.getSlot();
         this.metadata = Binary.readMetadata(this.getByteArray());
 
@@ -64,6 +66,8 @@ public class AddPlayerPacket extends DataPacket {
         this.varint2 = (int) this.getUnsignedVarInt();
         this.varint3 = (int) this.getUnsignedVarInt();
         this.varint4 = (int) this.getUnsignedVarInt();
+        this.varint5 = (int) this.getUnsignedVarInt();
+
         this.long1 = this.getLLong();
 
         int linkCount = (int) this.getUnsignedVarInt();
@@ -91,6 +95,8 @@ public class AddPlayerPacket extends DataPacket {
         this.putUnsignedVarInt(this.varint2);
         this.putUnsignedVarInt(this.varint3);
         this.putUnsignedVarInt(this.varint4);
+        this.putUnsignedVarInt(this.varint5);
+
         this.putLLong(this.long1);
 
         this.putUnsignedVarInt(this.links.length);

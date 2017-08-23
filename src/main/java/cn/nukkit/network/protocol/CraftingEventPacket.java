@@ -47,6 +47,21 @@ public class CraftingEventPacket extends DataPacket {
 
     @Override
     public void encode() {
+        this.putByte((byte) this.windowId);
+        this.putVarInt(this.type);
+        this.putUUID(this.id);
+
+        /*int inputSize = this.putUnsignedVarInt(0);
+        this.input = new Item[inputSize];
+        for (int i = 0; i < inputSize && i < 128; ++i) {
+            this.input[i] = this.getSlot();
+        }
+
+        int outputSize = (int) this.getUnsignedVarInt();
+        this.output = new Item[outputSize];
+        for (int i = 0; i < outputSize && i < 128; ++i) {
+            this.output[i] = getSlot();
+        }*/
 
     }
 

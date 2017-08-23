@@ -1,5 +1,6 @@
 package cn.nukkit.network.protocol;
 
+import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.Vector3;
 
 /**
@@ -29,7 +30,24 @@ public class ExplodePacket extends DataPacket {
 
     @Override
     public void decode() {
+        BlockVector3 v = this.getBlockVector3();
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+        this.radius = (float) (this.getVarInt() / 32);
 
+        int count = (int) this.getUnsignedVarInt();
+        for (int i = 0; i < count; ++i) {
+            x = y = z = 0.0f; // NULL
+            // $this->getSignedBlockPosition($x, $y, $z);
+            // Idk it's correct. Need check. @Anyone
+            BlockVector3 v = this.getBlockVector3();
+            this.x = v.x;
+            this.y = v.y;
+            this.z = v.z;
+            //
+            this.records[i] = new Vector3(x, y, z);
+        }
     }
 
     @Override

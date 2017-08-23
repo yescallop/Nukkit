@@ -9,11 +9,11 @@ public class InitiateWebSocketConnectionPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+        // TODO
     }
 
     @Override
     public void encode() {
-        //TODO
+        // TODO
     }
 }

@@ -91,6 +91,7 @@ public interface ProtocolInfo {
     byte AVAILABLE_COMMANDS_PACKET = 0x4c;
     byte COMMAND_REQUEST_PACKET = 0x4d;
     byte COMMAND_BLOCK_UPDATE_PACKET = 0x4e;
+    byte COMMAND_OUTPUT_PACKET = 0x4f;
     byte UPDATE_TRADE_PACKET = 0x50;
     byte UPDATE_EQUIPMENT_PACKET = 0x51;
     byte RESOURCE_PACK_DATA_INFO_PACKET = 0x52;

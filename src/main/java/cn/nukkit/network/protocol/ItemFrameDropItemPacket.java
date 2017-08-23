@@ -9,6 +9,11 @@ public class ItemFrameDropItemPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.ITEM_FRAME_DROP_ITEM_PACKET;
 
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
     public int x;
     public int y;
     public int z;
@@ -23,11 +28,6 @@ public class ItemFrameDropItemPacket extends DataPacket {
 
     @Override
     public void encode() {
-
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
+        this.putBlockVector3(x, y, z);
     }
 }

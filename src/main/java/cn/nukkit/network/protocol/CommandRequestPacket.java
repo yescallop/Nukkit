@@ -43,6 +43,10 @@ public class CommandRequestPacket extends DataPacket {
 
     @Override
     public void encode() {
+        this.putString(this.command);
+        this.putVarInt(this.type);
+        this.putString(this.requestId);
+        this.putVarLong(this.playerUniqueId);
     }
 
 }

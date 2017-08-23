@@ -52,12 +52,11 @@ public class AdventureSettingsPacket extends DataPacket {
     public int userPermission;
     public int actionPermissions = ACTION_FLAG_DEFAULT_LEVEL_PERMISSIONS;
 	public int permissionLevel = PERMISSION_LEVEL_MEMBER;
+	public int customStoredPermissions = 0;
 	public long userId = 0;
 
     @Override
     public void decode() {
-        this.flags = (int) this.getUnsignedVarInt();
-        this.userPermission = (int) this.getUnsignedVarInt();
         this.worldImmutable = (this.flags & 1) != 0;
         this.noPvp = (this.flags & (1 << 1)) != 0;
         this.noPvm = (this.flags & (1 << 2)) != 0;
@@ -69,6 +68,11 @@ public class AdventureSettingsPacket extends DataPacket {
         this.worldBuilder = (this.flags & (1 << 8)) != 0;
         this.isFlying = (this.flags & (1 << 9)) != 0;
         this.muted = (this.flags & (1 << 10)) != 0;
+        this.flags = this.getVarInt();
+        this.userPermission = this.getVarInt();
+        this.actionPermissions = this.getVarInt();
+        this.permissionLevel = this.getVarInt();
+        this.customStoredPermissions = this.getVarInt();
     }
 
     @Override
@@ -85,10 +89,11 @@ public class AdventureSettingsPacket extends DataPacket {
         if (this.worldBuilder) this.flags |= 1 << 8;
         if (this.isFlying) this.flags |= 1 << 9;
         if (this.muted) this.flags |= 1 << 10;
-        this.putUnsignedVarInt(this.flags);
-        this.putUnsignedVarInt(this.userPermission);
-        this.putUnsignedVarInt(this.actionPermissions);
-        this.putUnsignedVarInt(this.permissionLevel);
+        this.putVarInt(this.flags);  // -> !
+        this.putVarInt(this.userPermission); // -> !
+        this.putVarInt(this.actionPermissions); //  / => Steadfast2 - VarInt, PM-MP UnsignedVarInt ,hmm?!
+        this.putVarInt(this.permissionLevel); //   !
+        this.putVarInt(this.customStoredPermissions); // In PM-MP not exist ,from Steadfast2
         if ((this.userId & 0x01) != 0) {
             this.putLLong(-1 * ((this.userId + 1) >> 1));
         } else {

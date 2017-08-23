@@ -4,6 +4,8 @@ import cn.nukkit.math.BlockVector3;
 
 public class CommandBlockUpdatePacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.COMMAND_BLOCK_UPDATE_PACKET;
+
     public boolean isBlock;
     public int x;
     public int y;
@@ -11,7 +13,7 @@ public class CommandBlockUpdatePacket extends DataPacket {
     public int commandBlockMode;
     public boolean isRedstoneMode;
     public boolean isConditional;
-    public long minecartEid;
+    public long minecartEid; // int??
     public String command;
     public String lastOutput;
     public String name;
@@ -19,7 +21,7 @@ public class CommandBlockUpdatePacket extends DataPacket {
 
     @Override
     public byte pid() {
-        return ProtocolInfo.COMMAND_BLOCK_UPDATE_PACKET;
+        return NETWORK_ID;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class CommandBlockUpdatePacket extends DataPacket {
             this.isRedstoneMode = this.getBoolean();
             this.isConditional = this.getBoolean();
         } else {
-            this.minecartEid = this.getVarLong();
+            this.minecartEid = this.getUnsignedVarLong();
         }
         this.command = this.getString();
         this.lastOutput = this.getString();
@@ -51,7 +53,7 @@ public class CommandBlockUpdatePacket extends DataPacket {
             this.putBoolean(this.isRedstoneMode);
             this.putBoolean(this.isConditional);
         } else {
-            this.putVarLong(this.minecartEid);
+            this.putUnsignedVarLong(this.minecartEid);
         }
         this.putString(this.command);
         this.putString(this.lastOutput);

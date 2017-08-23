@@ -14,11 +14,13 @@ public class FullChunkDataPacket extends DataPacket {
 
     public int chunkX;
     public int chunkZ;
-    public byte[] data;
+    public String data;
 
     @Override
     public void decode() {
-
+        this.chunkX = this.getVarInt();
+        this.chunkZ = this.getVarInt();
+        this.data = this.getString();
     }
 
     @Override
@@ -26,6 +28,6 @@ public class FullChunkDataPacket extends DataPacket {
         this.reset();
         this.putVarInt(this.chunkX);
         this.putVarInt(this.chunkZ);
-        this.putByteArray(this.data);
+        this.putString(this.data);
     }
 }

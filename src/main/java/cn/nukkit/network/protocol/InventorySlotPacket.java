@@ -14,22 +14,22 @@ public class InventorySlotPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public int inventoryId;
-    public int slot;
+    public long inventoryId;
+    public long slot;
     public Item item;
 
     @Override
     public void decode() {
-        this.inventoryId = this.getVarInt();
-        this.slot = this.getVarInt();
+        this.inventoryId = this.getUnsignedVarInt();
+        this.slot = this.getUnsignedVarInt();
         this.item = this.getSlot();
     }
 
     @Override
     public void encode() {
         this.reset();
-        this.putVarInt((byte) this.inventoryId);
-        this.putVarInt(this.slot);
+        this.putUnsignedVarInt(this.inventoryId);
+        this.putUnsignedVarInt(this.slot);
         this.putSlot(this.item);
     }
 }

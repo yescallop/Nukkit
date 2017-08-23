@@ -1,8 +1,10 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.inventory.transaction.*;
-import cn.nukkit.math.BlockFace;
+/**
+ * @yescalop ,you need rewrite this. It's for Inventory 1.2
+ */
 
+import cn.nukkit.inventory.transaction.*;
 import java.util.ArrayList;
 import java.util.List;
 

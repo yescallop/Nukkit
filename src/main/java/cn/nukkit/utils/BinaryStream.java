@@ -340,6 +340,20 @@ public class BinaryStream {
         VarInt.writeUnsignedVarInt(this, v);
     }
 
+    public int getSignedVarInt() {
+        int result = this.getVarInt();
+        if (result % 2 == 0) {
+            result = result / 2;
+        } else {
+            result = (-1) * (result + 1) / 2;
+        }
+        return result;
+    }
+
+    public void putSignedVarInt(int v) {
+        VarInt.writeSignedVarInt(this, v);
+    }
+
     public int getVarInt() {
         return VarInt.readVarInt(this);
     }

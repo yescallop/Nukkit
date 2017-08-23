@@ -1,5 +1,7 @@
 package cn.nukkit.network.protocol;
 
+import cn.nukkit.math.BlockVector3;
+
 /**
  * author: MagicDroidX
  * Nukkit Project
@@ -17,12 +19,17 @@ public class ContainerOpenPacket extends DataPacket {
     public int x;
     public int y;
     public int z;
-    public final long entityId = -1;
+    public long entityId = -1;
 
     @Override
     public void decode() {
         this.windowId = this.getByte();
-  	this.type = this.getByte();
+        this.type = this.getByte();
+        BlockVector3 v = this.getBlockVector3();
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+        this.entityId = this.getVarLong();
     }
 
     @Override

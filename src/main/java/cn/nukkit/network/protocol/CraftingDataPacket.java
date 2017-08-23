@@ -28,7 +28,7 @@ public class CraftingDataPacket extends DataPacket {
     public static final int ENTRY_SHULKER_BOX = 5;
 
     public List<Object> entries = new ArrayList<>();
-    public boolean cleanRecipes;
+    public boolean cleanRecipes = false;
 
     private static int writeEntry(Object entry, BinaryStream stream) {
         if (entry instanceof ShapelessRecipe) {
@@ -129,7 +129,59 @@ public class CraftingDataPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+        /*$entries = [];
+        $recipeCount = $this->getUnsignedVarInt();
+        for($i = 0; $i < $recipeCount; ++$i){
+            $entry = [];
+            $entry["type"] = $recipeType = $this->getVarInt();
+            switch($recipeType){
+                case self::ENTRY_SHAPELESS:
+                case self::ENTRY_SHULKER_BOX:
+                    $ingredientCount = $this->getUnsignedVarInt();
+                    /** @var Item */
+                    /*$entry["input"] = [];
+                    for($j = 0; $j < $ingredientCount; ++$j){
+                        $entry["input"][] = $this->getSlot();
+                    }
+                    $resultCount = $this->getUnsignedVarInt();
+                    $entry["output"] = [];
+                    for($k = 0; $k < $resultCount; ++$k){
+                        $entry["output"][] = $this->getSlot();
+                    }
+                    $entry["uuid"] = $this->getUUID()->toString();
+                    break;
+                case self::ENTRY_SHAPED:
+                    $entry["width"] = $this->getVarInt();
+                    $entry["height"] = $this->getVarInt();
+                    $count = $entry["width"] * $entry["height"];
+                    $entry["input"] = [];
+                    for($j = 0; $j < $count; ++$j){
+                        $entry["input"][] = $this->getSlot();
+                    }
+                    $resultCount = $this->getUnsignedVarInt();
+                    $entry["output"] = [];
+                    for($k = 0; $k < $resultCount; ++$k){
+                        $entry["output"][] = $this->getSlot();
+                    }
+                    $entry["uuid"] = $this->getUUID()->toString();
+                    break;
+                case self::ENTRY_FURNACE:
+                case self::ENTRY_FURNACE_DATA:
+                    $entry["inputId"] = $this->getVarInt();
+                    if($recipeType === self::ENTRY_FURNACE_DATA){
+                        $entry["inputDamage"] = $this->getVarInt();
+                    }
+                    $entry["output"] = $this->getSlot();
+                    break;
+                case self::ENTRY_MULTI:
+                    $entry["uuid"] = $this->getUUID()->toString();
+                    break;
+                default:
+                    throw new \UnexpectedValueException("Unhandled recipe type $recipeType!"); //do not continue attempting to decode
+            }
+            $entries[] = $entry;
+        }
+        $this->getBool(); //cleanRecipes*/
     }
 
     @Override

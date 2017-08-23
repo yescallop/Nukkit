@@ -7,11 +7,16 @@ public class HurtArmorPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.HURT_ARMOR_PACKET;
 
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
     public int health;
 
     @Override
     public void decode() {
-
+        this.health = this.getVarInt();
     }
 
     @Override
@@ -19,10 +24,4 @@ public class HurtArmorPacket extends DataPacket {
         this.reset();
         this.putVarInt(this.health);
     }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
-
 }

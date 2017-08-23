@@ -3,6 +3,7 @@ package cn.nukkit.network.protocol;
 /**
  * author: MagicDroidX
  * Nukkit Project
+ * Note: SignedVarInt (SteadFast2), VarInt (PM-MP).
  */
 public class ContainerSetDataPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.CONTAINER_SET_DATA_PACKET;
@@ -28,14 +29,16 @@ public class ContainerSetDataPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+        this.windowId = this.getByte();
+        this.property = this.getSignedVarInt();
+        this.value = this.getSignedVarInt();
     }
 
     @Override
     public void encode() {
         this.reset();
         this.putByte((byte) this.windowId);
-        this.putVarInt(this.property);
-        this.putVarInt(this.value);
+        this.putSignedVarInt(this.property);
+        this.putSignedVarInt(this.value);
     }
 }

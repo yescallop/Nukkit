@@ -173,6 +173,14 @@ public final class VarInt {
 	    } while (value != 0);
     }
 
+    public static void writeSignedVarInt(BinaryStream stream, int value) {
+        if (value >= 0) {
+            value = 2 * value;
+        } else {
+            value = 2 * Math.abs(value) - 1;
+        }
+        writeVarInt(stream, value);
+    }
     /**
      * @param stream BinaryStream
      * @param value  Signed int
