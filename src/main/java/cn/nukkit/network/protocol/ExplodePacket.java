@@ -41,10 +41,10 @@ public class ExplodePacket extends DataPacket {
             x = y = z = 0.0f; // NULL
             // $this->getSignedBlockPosition($x, $y, $z);
             // Idk it's correct. Need check. @Anyone
-            BlockVector3 v = this.getBlockVector3();
-            this.x = v.x;
-            this.y = v.y;
-            this.z = v.z;
+            BlockVector3 v1 = this.getBlockVector3();
+            this.x = v1.x;
+            this.y = v1.y;
+            this.z = v1.z;
             //
             this.records[i] = new Vector3(x, y, z);
         }

@@ -56,7 +56,7 @@ public class ClientboundMapItemDataPacket extends DataPacket {
         if ((update & 0x08) != 0) { //TODO: find out what these are for
             this.putUnsignedVarInt(eids.length);
             for (int eid : eids) {
-                this.getVarInt(eid);
+                eid = this.getVarInt();
             }
         }
         if ((update & (TEXTURE_UPDATE | DECORATIONS_UPDATE)) != 0) {

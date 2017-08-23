@@ -61,7 +61,7 @@ public class BookEditPacket extends DataPacket {
 
     @Override
     public void encode() {
-        this.putByte(this.type);
+        this.putByte((byte) this.type);
         this.putByte((byte) this.inventorySlot);
 
         switch (this.type) {

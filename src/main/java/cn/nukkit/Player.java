@@ -1045,7 +1045,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.level.sleepTicks = 0;
 
             AnimatePacket pk = new AnimatePacket();
-            pk.eid = this.id;
+            pk.entityRuntimeId = this.id;
             pk.action = 3; //Wake up
             this.dataPacket(pk);
         }
@@ -2618,7 +2618,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 case ProtocolInfo.BLOCK_PICK_REQUEST_PACKET:
                     BlockPickRequestPacket pickRequestPacket = (BlockPickRequestPacket) packet;
                     if (this.isCreative()) {
-                        BlockEntity be = this.getLevel().getBlockEntity(new Vector3(pickRequestPacket.x, pickRequestPacket.y, pickRequestPacket.z));
+                        BlockEntity be = this.getLevel().getBlockEntity(new Vector3(pickRequestPacket.tileX, pickRequestPacket.tileY, pickRequestPacket.tileZ));
                         if (be != null) {
                             CompoundTag nbt = be.getCleanedNBT();
                             if(nbt != null){
@@ -2642,7 +2642,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     AnimatePacket animatePacket = new AnimatePacket();
-                    animatePacket.eid = this.getId();
+                    animatePacket.entityRuntimeId = this.getId();
                     animatePacket.action = animationEvent.getAnimationType();
                     Server.broadcastPacket(this.getViewers().values(), animatePacket);
                     break;
@@ -2690,7 +2690,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                             } else {
                                 EntityEventPacket pk = new EntityEventPacket();
-                                pk.eid = this.getId();
+                                pk.entityRuntimeId = this.getId();
                                 pk.event = EntityEventPacket.USE_ITEM;
                                 this.dataPacket(pk);
                                 Server.broadcastPacket(this.getViewers().values(), pk);
@@ -4013,7 +4013,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             if (this.getLastDamageCause() == source && this.spawned) {
                 this.getFoodData().updateFoodExpLevel(0.3);
                 EntityEventPacket pk = new EntityEventPacket();
-                pk.eid = this.id;
+                pk.entityRuntimeId= this.id;
                 pk.event = EntityEventPacket.HURT_ANIMATION;
                 this.dataPacket(pk);
             }
@@ -4195,7 +4195,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     changeDimensionPacket1.z = (float) this.getZ();
                     this.dataPacket(changeDimensionPacket1);
 
-                    this.forceSendEmptyChunks();
+                    //this.forceSendEmptyChunks();
                     this.getServer().getScheduler().scheduleDelayedTask(() -> {
                         PlayStatusPacket statusPacket0 = new PlayStatusPacket();
                         statusPacket0.status = PlayStatusPacket.PLAYER_SPAWN;
@@ -4219,7 +4219,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return false;
     }
 
-    protected void forceSendEmptyChunks() {
+    // I don't know this is correct, in PM-MP and others soft not exist that.
+    /*protected void forceSendEmptyChunks() {
         int chunkPositionX = this.getFloorX() >> 4;
         int chunkPositionZ = this.getFloorZ() >> 4;
         for (int x = -3; x < 3; x++) {
@@ -4227,11 +4228,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 FullChunkDataPacket chunk = new FullChunkDataPacket();
                 chunk.chunkX = chunkPositionX + x;
                 chunk.chunkZ = chunkPositionZ + z;
-                chunk.data = new byte[0];
+                chunk.data = sendData();
                 this.dataPacket(chunk);
             }
         }
-    }
+    }*/
 
     public void teleportImmediate(Location location) {
         this.teleportImmediate(location, TeleportCause.PLUGIN);
