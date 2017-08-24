@@ -264,7 +264,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int COAL_BLOCK = 173;
     public static final int PACKED_ICE = 174;
     public static final int DOUBLE_PLANT = 175;
-
+    public static final int STANDING_BANNER = 176;
+    public static final int WALL_BANNER = 177;
     public static final int DAYLIGHT_DETECTOR_INVERTED = 178;
     public static final int RED_SANDSTONE = 179;
     public static final int RED_SANDSTONE_STAIRS = 180;
@@ -294,6 +295,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int ICE_FROSTED = 207;
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
+    public static final int MAGMA_BLOCK = 213;
 
     public static final int SHULKER_BOX = 218;
     public static final int PURPLE_GLAZED_TERRACOTTA = 219;
@@ -326,6 +328,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int PISTON_EXTENSION = 250;
 
     public static final int OBSERVER = 251;
+    public static final int STRUCTURE_BLOCK = 252;
 
     public static Class[] list = null;
     public static Block[] fullList = null;
@@ -548,7 +551,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[DARK_OAK_DOOR_BLOCK] = BlockDoorDarkOak.class; //197
             list[GRASS_PATH] = BlockGrassPath.class; //198
             list[ITEM_FRAME_BLOCK] = BlockItemFrame.class; //199
-            //TODO: list[CHORUS_FLOWER] = BlockChorusFlower.class; //200
+            list[CHORUS_FLOWER] = BlockChorusFlower.class; //200
             list[PURPUR_BLOCK] = BlockPurpur.class; //201
 
             list[PURPUR_STAIRS] = BlockStairsPurpur.class; //203
@@ -558,7 +561,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[END_ROD] = BlockEndRod.class; //208
             list[END_GATEWAY] = BlockEndGateway.class; //209
 
-            //TODO: list[SHULKER_BOX] = BlockShulkerBox.class; //218
+            list[SHULKER_BOX] = BlockShulkerBox.class; //218
             list[PURPLE_GLAZED_TERRACOTTA] = BlockTerracottaGlazedPurple.class; //219
             list[WHITE_GLAZED_TERRACOTTA] = BlockTerracottaGlazedWhite.class; //220
             list[ORANGE_GLAZED_TERRACOTTA] = BlockTerracottaGlazedOrange.class; //221
@@ -579,7 +582,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[CONCRETE] = BlockConcrete.class; //236
             list[CONCRETE_POWDER] = BlockConcretePowder.class; //237
 
-            //TODO: list[CHORUS_PLANT] = BlockChorusPlant.class; //240
+            list[CHORUS_PLANT] = BlockChorusPlant.class; //240
             list[STAINED_GLASS] = BlockGlassStained.class; //241
             list[PODZOL] = BlockPodzol.class; //243
             list[BEETROOT_BLOCK] = BlockBeetroot.class; //244
@@ -802,6 +805,10 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public final void setDamage(Integer meta) {
         this.meta = (meta == null ? 0 : meta & 0x0f);
     }
+    
+    public int getMaxStackSize() {
+        return 64;
+    }
 
     final public void position(Position v) {
         this.x = (int) v.x;
@@ -827,12 +834,18 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
         if(toolType == ItemTool.TYPE_SHEARS) return isWoolBlock ? 5.0: 15.0;
         if(toolType == ItemTool.TYPE_NONE) return 1.0;
         switch (toolTier) {
-            case ItemTool.TIER_WOODEN: return 2.0;
-            case ItemTool.TIER_STONE: return 4.0;
-            case ItemTool.TIER_IRON: return 6.0;
-            case ItemTool.TIER_DIAMOND: return 8.0;
-            case ItemTool.TIER_GOLD: return 12.0;
-            default: return 1.0;
+            case ItemTool.TIER_WOODEN:
+                return 2.0;
+            case ItemTool.TIER_STONE:
+                return 4.0;
+            case ItemTool.TIER_IRON:
+                return 6.0;
+            case ItemTool.TIER_DIAMOND:
+                return 8.0;
+            case ItemTool.TIER_GOLD:
+                return 12.0;
+            default:
+                return 1.0;
         }
     }
 
