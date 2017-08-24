@@ -302,7 +302,7 @@ public class Item implements Cloneable {
     public static final int DARK_OAK_DOOR_BLOCK = 197;
     public static final int GRASS_PATH = 198;
     public static final int ITEM_FRAME_BLOCK = 199;
-    public static final int CHORUS_FLOWER = 200;
+    //public static final int CHORUS_FLOWER = 200;
     public static final int PURPUR_BLOCK = 201;
 
     public static final int PURPUR_STAIRS = 203;
@@ -312,7 +312,7 @@ public class Item implements Cloneable {
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
 
-    public static final int SHULKER_BOX = 218;
+    //public static final int SHULKER_BOX = 218;
     public static final int PURPLE_GLAZED_TERRACOTTA = 219;
     public static final int WHITE_GLAZED_TERRACOTTA = 220;
     public static final int ORANGE_GLAZED_TERRACOTTA = 221;
@@ -332,7 +332,7 @@ public class Item implements Cloneable {
     public static final int CONCRETE = 236;
     public static final int CONCRETE_POWDER = 237;
 
-    public static final int CHORUS_PLANT = 240;
+    //public static final int CHORUS_PLANT = 240;
     public static final int STAINED_GLASS = 241;
     public static final int PODZOL = 243;
     public static final int BEETROOT_BLOCK = 244;
@@ -2014,10 +2014,6 @@ public class Item implements Cloneable {
         } else {
             this.hasMeta = false;
         }
-    }
-
-    public int getMaxStackSize() {
-        return 64;
     }
 
     final public Short getFuelTime() {
