@@ -1929,14 +1929,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         startGamePacket.entityRuntimeId = this.id;
         startGamePacket.playerGamemode = getClientFriendlyGamemode(this.gamemode);
         startGamePacket.x = (float) this.x;
-        startGamePacket.y = (float) (this.y + this.getBaseOffset());
+        startGamePacket.y = (float) this.y;
         startGamePacket.z = (float) this.z;
         startGamePacket.yaw = (float) this.yaw;
         startGamePacket.pitch = (float) this.pitch;
         startGamePacket.seed = -1;
         startGamePacket.dimension = (byte) (this.level.getDimension() & 0xff);
-        startGamePacket.generator = 1; //0 old, 1 infinite, 2 flat
-        startGamePacket.worldGamemode = getClientFriendlyGamemode(this.server.getGamemode());
+        startGamePacket.gamemode = getClientFriendlyGamemode(this.gamemode);
         startGamePacket.difficulty = this.server.getDifficulty();
         startGamePacket.spawnX = (int) spawnPosition.x;
         startGamePacket.spawnY = (int) spawnPosition.y;
@@ -1949,6 +1948,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         startGamePacket.commandsEnabled = this.isEnableClientCommand();
         startGamePacket.levelId = "";
         startGamePacket.worldName = this.getServer().getNetwork().getName();
+        startGamePacket.generator = 1; //0 old, 1 infinite, 2 flat
         this.dataPacket(startGamePacket);
 
         SetTimePacket setTimePacket = new SetTimePacket();
