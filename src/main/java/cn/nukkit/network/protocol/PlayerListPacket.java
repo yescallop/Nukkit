@@ -32,11 +32,7 @@ public class PlayerListPacket extends DataPacket {
                     entry.uuid = this.getUUID();
                     entry.entityUniqueId = this.getVarLong();
                     entry.username = this.getString();
-                    entry.skinId = this.getString();
-                    entry.skinData = this.getString();
-                    entry.capeData = this.getString();
-                    entry.geometryModel = this.getString();
-                    entry.xboxUserId = this.getString();
+                    entry.skin = this.getSkin();
                 } else {
                     entry.uuid = this.getUUID();
                 }
@@ -55,11 +51,7 @@ public class PlayerListPacket extends DataPacket {
                 this.putUUID(entry.uuid);
                 this.putVarLong(entry.entityUniqueId);
                 this.putString(entry.username);
-                this.putString(entry.skinId);
-                this.putString(entry.skinData);
-                this.putString(entry.capeData);
-                this.putString(entry.geometryModel);
-                this.putString(entry.xboxUserId);
+                this.putSkin(entry.skin);
             } else {
                 this.putUUID(entry.uuid);
             }
@@ -72,25 +64,17 @@ public class PlayerListPacket extends DataPacket {
         public UUID uuid;
         public long entityUniqueId = 0;
         public String username = "";
-        public String skinId;
-        public String skinData;
-        public String capeData;
-        public String geometryModel;
-        public String xboxUserId;
+        public Skin skin;
 
         public Entry(UUID uuid) {
             this.uuid = uuid;
         }
 
-        public Entry(UUID uuid, long entityUniqueId, String username, String skinId, String skinData/*, String capeData, String geometryModel, String xboxUserId*/) {
+        public Entry(UUID uuid, long entityUniqueId, String username, Skin skin/*, String capeData, String geometryModel, String xboxUserId*/) {
             this.uuid = uuid;
             this.entityUniqueId = entityUniqueId;
             this.username = username;
-            this.skinId = skinId;
-            this.skinData = skinData;
-            this.capeData = capeData; // TODO ALL 3
-            this.geometryModel = geometryModel;
-            this.xboxUserId = xboxUserId;
+            this.skin = skin;
         }
     }
 

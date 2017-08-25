@@ -18,36 +18,36 @@ public class StartGamePacket extends DataPacket {
 
     public long entityUniqueId;
     public long entityRuntimeId;
-    public int playerGamemode;
+    public int playerGamemode; // 0, 1, 2
     public float x;
     public float y;
     public float z;
-    public float pitch;
     public float yaw;
+    public float pitch;
     public int seed;
-    public int dimension;
-    public int generator = 1;
-    public int worldGamemode;
+    public int dimension; // 0, 1, 2
+    public int generator = 1; // 0, 1, 2
+    public int worldGamemode; // 0, 1, 2, 3
     public int difficulty;
     public int spawnX;
     public int spawnY;
     public int spawnZ;
-    public boolean hasAchievementsDisabled = true;
+    public boolean hasAchievementsDisabled = true; //loadInCreative
     public int dayCycleStopTime = -1; //-1 = not stopped, any positive value = stopped at that time
-    public boolean eduMode = false;
+    public boolean eduMode; // 0 - vanilla, 1 - edu
     public float rainLevel;
     public float lightningLevel;
     public boolean isMultiplayerGame = true;
-    public boolean hasBroadcastToLAN = true;
-    public boolean hasXboxLiveBroadcast = false; // That's false in PM-MP IDK
+    public boolean hasBroadcastToLAN;
+    public boolean hasXboxLiveBroadcast;
     public boolean commandsEnabled;
-    public boolean isTexturePacksRequired = true; // That's true in PM-MP IDK
+    public boolean isTexturePacksRequired;
     public RuleData[] ruleDatas = new RuleData[0];
-    public boolean hasBonusChestEnabled = false;
-    public boolean hasStartWithMapEnabled = false;
-    public boolean hasTrustPlayersEnabled = false;
+    public boolean hasBonusChestEnabled;
+    public boolean hasStartWithMapEnabled;
+    public boolean hasTrustPlayersEnabled;
     public int defaultPlayerPermission = AdventureSettingsPacket.PERMISSION_LEVEL_MEMBER;
-    // public int gamePublish = 4; Verify final
+    public int unknown;
     public String levelId = ""; //base64 string, usually the same as world folder name in vanilla
     public String worldName;
     public String premiumWorldTemplateId = "";
@@ -64,8 +64,8 @@ public class StartGamePacket extends DataPacket {
         this.x = v.x;
         this.y = v.y;
         this.z = v.z;
-        this.pitch = this.getLFloat();
         this.yaw = this.getLFloat();
+        this.pitch = this.getLFloat();
         this.seed = this.getVarInt();
         this.dimension = this.getVarInt();
         this.generator = this.getVarInt();
@@ -106,8 +106,8 @@ public class StartGamePacket extends DataPacket {
         this.putUnsignedVarLong(this.entityRuntimeId);
         this.putVarInt(this.playerGamemode);
         this.putVector3f(this.x, this.y, this.z);
-        this.putLFloat(this.pitch);
         this.putLFloat(this.yaw);
+        this.putLFloat(this.pitch);
         this.putVarInt(this.seed);
         this.putVarInt(this.dimension);
         this.putVarInt(this.generator);
@@ -132,13 +132,12 @@ public class StartGamePacket extends DataPacket {
         this.putBoolean(this.hasStartWithMapEnabled);
         this.putBoolean(this.hasTrustPlayersEnabled);
         this.putVarInt(this.defaultPlayerPermission);
-        //this.putVarInt(this.gamePublish);
+        this.putVarInt(this.unknown);
         this.putString(this.levelId);
         this.putString(this.worldName);
         this.putString(this.premiumWorldTemplateId);
         this.putBoolean(this.unknownBoolean);
         this.putLLong(this.currentTick);
-
         this.putVarInt(this.enchantmentSeed);
     }
 

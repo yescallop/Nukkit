@@ -823,7 +823,7 @@ public class Server {
 
     public void addOnlinePlayer(Player player) {
         this.playerList.put(player.getUniqueId(), player);
-        this.updatePlayerListData(player.getUniqueId(), player.getId(), player.getDisplayName(), player.getSkinId(), player.getSkinData());
+        this.updatePlayerListData(player.getUniqueId(), player.getId(), player.getDisplayName(), player.getSkin());
     }
 
     public void removeOnlinePlayer(Player player) {
@@ -838,19 +838,20 @@ public class Server {
         }
     }
 
-    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, String skinId, String skinData) {
-        this.updatePlayerListData(uuid, entityUniqueId, username, skinId, skinData, this.playerList.values());
+    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, Skin skin) {
+        this.updatePlayerListData(uuid, entityUniqueId, username, skin, this.playerList.values());
     }
 
-    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, String skinId, String skinData, Player[] players) {
+    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, Skin skin, Player[] players) {
         PlayerListPacket pk = new PlayerListPacket();
         pk.type = PlayerListPacket.TYPE_ADD;
-        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid, entityUniqueId, username, skinId, skinData)};
+        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid, entityUniqueId, username, skin
+        )};
         Server.broadcastPacket(players, pk);
     }
 
-    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, String skinId, String skinData, Collection<Player> players) {
-        this.updatePlayerListData(uuid, entityUniqueId, username, skinId, skinData,
+    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, Skin skin, Collection<Player> players) {
+        this.updatePlayerListData(uuid, entityUniqueId, username, skin,
                 players.stream()
                         .filter(p -> !p.getUniqueId().equals(uuid))
                         .toArray(Player[]::new));
@@ -882,8 +883,7 @@ public class Server {
                         p.getUniqueId(),
                         p.getId(),
                         p.getDisplayName(),
-                        p.getSkinId(),
-                        p.getSkinData()))
+                        p.getSkin()))
                 .toArray(PlayerListPacket.Entry[]::new);
 
         player.dataPacket(pk);
