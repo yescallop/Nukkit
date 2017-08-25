@@ -13,13 +13,13 @@ public class SetEntityLinkPacket extends DataPacket {
 
     public long rider;
     public long riding;
-    public byte[] type;
+    public int type;
 
     @Override
     public void decode() {
         this.rider = this.getVarLong();
         this.riding = this.getVarLong();
-        this.type = this.getByteArray();
+        this.type = this.getVarInt();
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SetEntityLinkPacket extends DataPacket {
         this.reset();
         this.putVarLong(this.rider);
         this.putVarLong(this.riding);
-        this.putByteArray(this.type);
+        this.putVarInt(this.type);
     }
 
     @Override

@@ -52,7 +52,7 @@ public class SayCommand extends VanillaCommand {
 
 
         sender.getServer().broadcastMessage(new TranslationContainer(
-                TextFormat.LIGHT_PURPLE + "%chat.types.announcement",
+                TextFormat.LIGHT_PURPLE + "%chat.type.announcement",
                 new String[]{senderString, TextFormat.LIGHT_PURPLE + msg}
         ));
         return true;

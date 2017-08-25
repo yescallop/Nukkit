@@ -22,7 +22,7 @@ public class PlayerChatEvent extends PlayerMessageEvent implements Cancellable {
     protected Set<CommandSender> recipients = new HashSet<>();
 
     public PlayerChatEvent(Player player, String message) {
-        this(player, message, "chat.types.text", null);
+        this(player, message, "chat.type.text", null);
     }
 
     public PlayerChatEvent(Player player, String message, String format, Set<CommandSender> recipients) {

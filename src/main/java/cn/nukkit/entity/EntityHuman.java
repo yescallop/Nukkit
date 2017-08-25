@@ -55,6 +55,12 @@ public class EntityHuman extends EntityHumanType {
 
     protected Skin skin;
 
+    protected String skinId;
+    protected String skinData;
+    protected String capeData;
+    protected String geometryModel;
+    protected String xboxUserId;
+
     @Override
     public int getNetworkId() {
         return -1;
@@ -68,6 +74,14 @@ public class EntityHuman extends EntityHumanType {
         return skin;
     }
 
+    public String getSkinId() {
+        return skinId;
+    }
+
+    public String getSkinData() {
+        return skinData;
+    }
+
     public UUID getUniqueId() {
         return uuid;
     }
@@ -78,6 +92,14 @@ public class EntityHuman extends EntityHumanType {
 
     public void setSkin(Skin skin) {
         this.skin = skin;
+    }
+
+    public void setSkinId(String skinId) {
+        this.skinId = skinId;
+    }
+
+    public void setSkinData(String skinData) {
+        this.skinData = skinData;
     }
 
     @Override
@@ -136,7 +158,7 @@ public class EntityHuman extends EntityHumanType {
                 throw new IllegalStateException(this.getClass().getSimpleName() + " must have a valid skin set");
             }
 
-            this.server.updatePlayerListData(this.getUniqueId(), this.getId(), this.getName(), this.skin, new Player[]{player});
+            this.server.updatePlayerListData(this.getUniqueId(), this.getId(), this.getName(), this.skinId, this.skinData, new Player[]{player});
 
             AddPlayerPacket pk = new AddPlayerPacket();
             pk.uuid = this.getUniqueId();

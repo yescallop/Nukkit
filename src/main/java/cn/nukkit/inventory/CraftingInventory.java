@@ -11,7 +11,7 @@ public class CraftingInventory extends BaseInventory {
     public CraftingInventory(InventoryHolder holder, Inventory resultInventory, InventoryType type) {
         super(holder, type);
         if (!type.getDefaultTitle().equals("Crafting")) {
-            throw new IllegalStateException("Invalid Inventory types, expected CRAFTING or WORKBENCH");
+            throw new IllegalStateException("Invalid Inventory type, expected CRAFTING or WORKBENCH");
         }
         this.resultInventory = resultInventory;
     }

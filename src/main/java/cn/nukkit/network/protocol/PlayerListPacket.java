@@ -82,13 +82,13 @@ public class PlayerListPacket extends DataPacket {
             this.uuid = uuid;
         }
 
-        public Entry(UUID uuid, long entityUniqueId, String username, String skinId, String skinData, String capeData, String geometryModel, String xboxUserId) {
+        public Entry(UUID uuid, long entityUniqueId, String username, String skinId, String skinData/*, String capeData, String geometryModel, String xboxUserId*/) {
             this.uuid = uuid;
             this.entityUniqueId = entityUniqueId;
             this.username = username;
             this.skinId = skinId;
             this.skinData = skinData;
-            this.capeData = capeData;
+            this.capeData = capeData; // TODO ALL 3
             this.geometryModel = geometryModel;
             this.xboxUserId = xboxUserId;
         }
