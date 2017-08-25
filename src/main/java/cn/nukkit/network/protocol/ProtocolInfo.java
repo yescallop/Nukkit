@@ -117,4 +117,6 @@ public interface ProtocolInfo {
     byte SERVER_SETTINGS_REQUEST_PACKET = 0x66;
     byte SERVER_SETTINGS_RESPONSE_PACKET = 0x67;
     byte BATCH_PACKET = (byte) 0xff;
+    byte SHOW_PROFILE_PACKET = 0x68;
+    byte SET_DEFAULT_GAME_TYPE_PACKET = 0x69;
 }

@@ -18,18 +18,24 @@ public class AvailableCommandsPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.AVAILABLE_COMMANDS_PACKET;
     public Map<String, CommandDataVersions> commands;
 
-    public static final int ARG_FLAG_VALID = 0x100000;
-    public static final int ARG_FLAG_ENUM = 0x200000;
-    public static final int ARG_TYPE_INT       = 0x01;
-    public static final int ARG_TYPE_FLOAT     = 0x02;
-    public static final int ARG_TYPE_VALUE     = 0x03;
-    public static final int ARG_TYPE_TARGET    = 0x04;
-    public static final int ARG_TYPE_STRING    = 0x0c;
-    public static final int ARG_TYPE_POSITION  = 0x0d;
-    public static final int ARG_TYPE_RAWTEXT   = 0x10;
-    public static final int ARG_TYPE_TEXT      = 0x12;
+    public static final int ARG_FLAG_VALID = 0x1048576;
 
-    public static final int ARG_FLAG_TEMPLATE = 0x01000000;
+    public static final int  ARG_TYPE_INT       = 1;
+    public static final int  ARG_TYPE_FLOAT     = 2;
+    public static final int  ARG_TYPE_MIXED     = 0x03;
+    public static final int  ARG_TYPE_TARGET    = 0x04;
+    /*public static final int ARG_TYPE_STRING    = 0x0c; */
+    public static final int  ARG_TYPE_STRING    = 0x12;
+    /*public static final int ARG_TYPE_POSITION    = 0x0d; */
+    public static final int  ARG_TYPE_POSITION  = 0x13;
+    /*public static finaint nt ARG_TYPE_RAWTEXT = 0x10; */
+    public static final int  ARG_TYPE_RAWTEXT   = 0x16;
+    /*public static final int ARG_TYPE_TEXT    = 0x12; */
+    public static final int  ARG_TYPE_TEXT      = 0x18;
+    public static final int  ARG_TYPE_JSON      = 0x21;
+    public static final int  ARG_TYPE_COMMAND   = 0x28;
+    public static final int  ARG_FLAG_ENUM      = 0x2097152;
+    public static final int  ARG_FLAG_TEMPLATE  = 0x16777216;
 
     @Override
     public byte pid() {

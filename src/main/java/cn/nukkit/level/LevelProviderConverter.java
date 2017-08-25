@@ -36,7 +36,7 @@ class LevelProviderConverter {
 
     LevelProviderConverter from(LevelProvider provider) {
         if (!(provider instanceof McRegion) && !(provider instanceof LevelDB)) {
-            throw new IllegalArgumentException("From type can be only McRegion or LevelDB");
+            throw new IllegalArgumentException("From types can be only McRegion or LevelDB");
         }
         this.provider = provider;
         return this;
@@ -44,7 +44,7 @@ class LevelProviderConverter {
 
     LevelProviderConverter to(Class<? extends LevelProvider> toClass) {
         if (toClass != Anvil.class) {
-            throw new IllegalArgumentException("To type can be only Anvil");
+            throw new IllegalArgumentException("To types can be only Anvil");
         }
         this.toClass = toClass;
         return this;

@@ -180,7 +180,7 @@ public class Permission {
                     children.put(k, true);
                 }
             } else {
-                throw new IllegalStateException("'children' key is of wrong type");
+                throw new IllegalStateException("'children' key is of wrong types");
             }
         }
 

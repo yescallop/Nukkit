@@ -9,8 +9,8 @@ public class UpdateAttributesPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.UPDATE_ATTRIBUTES_PACKET;
 
+    public long entityRuntimeId;
     public Attribute[] entries;
-    public long entityId;
 
     @Override
     public byte pid() {
@@ -18,13 +18,25 @@ public class UpdateAttributesPacket extends DataPacket {
     }
 
     public void decode() {
+        this.entityRuntimeId = this.getUnsignedVarLong();
 
+        if (this.entries == null) {
+            this.getUnsignedVarInt();
+        } else {
+            for (Attribute entry : this.entries) {
+                entry.getMinValue();
+                entry.getMaxValue();
+                entry.getValue();
+                entry.getDefaultValue();
+                entry.getName();
+            }
+        }
     }
 
     public void encode() {
         this.reset();
 
-        this.putVarLong(this.entityId);
+        this.putUnsignedVarLong(this.entityRuntimeId);
 
         if (this.entries == null) {
             this.putUnsignedVarInt(0);

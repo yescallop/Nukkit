@@ -54,7 +54,7 @@ public class ListTag<T extends Tag> extends Tag {
 
     @Override
     public String toString() {
-        return "ListTag " + this.getName() + " [" + list.size() + " entries of type " + Tag.getTagName(type) + "]";
+        return "ListTag " + this.getName() + " [" + list.size() + " entries of types " + Tag.getTagName(type) + "]";
     }
 
     public void print(String prefix, PrintStream out) {

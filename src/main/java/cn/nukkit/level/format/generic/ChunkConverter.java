@@ -19,7 +19,7 @@ public class ChunkConverter {
 
     public ChunkConverter from(BaseFullChunk chunk) {
         if (!(chunk instanceof cn.nukkit.level.format.mcregion.Chunk) && !(chunk instanceof cn.nukkit.level.format.leveldb.Chunk)) {
-            throw new IllegalArgumentException("From type can be only McRegion or LevelDB");
+            throw new IllegalArgumentException("From types can be only McRegion or LevelDB");
         }
         this.chunk = chunk;
         return this;
@@ -27,7 +27,7 @@ public class ChunkConverter {
 
     public ChunkConverter to(Class<? extends FullChunk> toClass) {
         if (toClass != Chunk.class) {
-            throw new IllegalArgumentException("To type can be only Anvil");
+            throw new IllegalArgumentException("To types can be only Anvil");
         }
         this.toClass = toClass;
         return this;

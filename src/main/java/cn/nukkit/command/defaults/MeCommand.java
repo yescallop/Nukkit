@@ -49,7 +49,7 @@ public class MeCommand extends VanillaCommand {
             msg = msg.substring(0, msg.length() - 1);
         }
 
-        sender.getServer().broadcastMessage(new TranslationContainer("chat.type.emote", new String[]{name, TextFormat.WHITE + msg}));
+        sender.getServer().broadcastMessage(new TranslationContainer("chat.types.emote", new String[]{name, TextFormat.WHITE + msg}));
 
         return true;
     }

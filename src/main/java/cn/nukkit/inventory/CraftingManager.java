@@ -44,7 +44,7 @@ public class CraftingManager {
             }
 
 
-            switch (recipe.getInt("type")) {
+            switch (recipe.getInt("types")) {
                 case 0:
                     // TODO: handle multiple result items
                     Map<String, Object> first = recipe.getMapList("output").get(0);

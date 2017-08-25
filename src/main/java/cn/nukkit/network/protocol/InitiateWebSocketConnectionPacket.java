@@ -2,18 +2,22 @@ package cn.nukkit.network.protocol;
 
 public class InitiateWebSocketConnectionPacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.INITIATE_WEB_SOCKET_CONNECTION_PACKET;
+
     @Override
     public byte pid() {
-        return ProtocolInfo.INITIATE_WEB_SOCKET_CONNECTION_PACKET;
+        return NETWORK_ID;
     }
+
+    public String string1;
 
     @Override
     public void decode() {
-        // TODO
+        this.string1 = this.getString();
     }
 
     @Override
     public void encode() {
-        // TODO
+        this.putString(this.string1);
     }
 }

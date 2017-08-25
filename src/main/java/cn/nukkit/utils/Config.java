@@ -59,7 +59,7 @@ public class Config {
     /**
      * Constructor for Config instance with undefined file object
      *
-     * @param type - Config type
+     * @param type - Config types
      */
     public Config(int type) {
         this.type = type;

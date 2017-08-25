@@ -17,7 +17,7 @@ public class BossEventPacket extends DataPacket {
     public static final int TYPE_UNREGISTER_PLAYER = 3;
     /* S2C: Appears not to be implemented. Currently bar percentage only appears to change in response to the target entity's health. */
     public static final int TYPE_HEALTH_PERCENT = 4;
-    /* S2C: Also appears to not be implemented. Title client-side sticks as the target entity's nametag, or their entity type name if not set. */
+    /* S2C: Also appears to not be implemented. Title client-side sticks as the target entity's nametag, or their entity types name if not set. */
     public static final int TYPE_TITLE = 5;
     /* S2C: Not sure on this. Includes color and overlay fields, plus an unknown short. TODO: check this */
     public static final int TYPE_UNKNOWN_6 = 6;

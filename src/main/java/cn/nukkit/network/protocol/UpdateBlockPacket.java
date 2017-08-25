@@ -25,7 +25,7 @@ public class UpdateBlockPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+        // TODO
     }
 
     @Override

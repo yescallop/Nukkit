@@ -263,9 +263,9 @@ public abstract class Command {
     public static void broadcastCommandMessage(CommandSender source, String message, boolean sendToSource) {
         Set<Permissible> users = source.getServer().getPluginManager().getPermissionSubscriptions(Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
 
-        TranslationContainer result = new TranslationContainer("chat.type.admin", new String[]{source.getName(), message});
+        TranslationContainer result = new TranslationContainer("chat.types.admin", new String[]{source.getName(), message});
 
-        TranslationContainer colored = new TranslationContainer(TextFormat.GRAY + "" + TextFormat.ITALIC + "%chat.type.admin", new String[]{source.getName(), message});
+        TranslationContainer colored = new TranslationContainer(TextFormat.GRAY + "" + TextFormat.ITALIC + "%chat.types.admin", new String[]{source.getName(), message});
 
         if (sendToSource && !(source instanceof ConsoleCommandSender)) {
             source.sendMessage(message);

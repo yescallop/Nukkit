@@ -3001,7 +3001,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void addEntityMotion(int chunkX, int chunkZ, long entityId, double x, double y, double z) {
         SetEntityMotionPacket pk = new SetEntityMotionPacket();
-        pk.eid = entityId;
+        pk.entityRuntimeId = entityId;
         pk.motionX = (float) x;
         pk.motionY = (float) y;
         pk.motionZ = (float) z;
@@ -3011,7 +3011,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void addEntityMovement(int chunkX, int chunkZ, long entityId, double x, double y, double z, double yaw, double pitch, double headYaw) {
         MoveEntityPacket pk = new MoveEntityPacket();
-        pk.eid = entityId;
+        pk.entityRuntimeId = entityId;
         pk.x = (float) x;
         pk.y = (float) y;
         pk.z = (float) z;

@@ -12,19 +12,19 @@ public class PlayStatusPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public static final int LOGIN_SUCCESS = 0;
-    public static final int LOGIN_FAILED_CLIENT = 1;
-    public static final int LOGIN_FAILED_SERVER = 2;
-    public static final int PLAYER_SPAWN = 3;
-    public static final int LOGIN_FAILED_INVALID_TENANT = 4;
-    public static final int LOGIN_FAILED_VANILLA_EDU = 5;
-    public static final int LOGIN_FAILED_EDU_VANILLA = 6;
+    public static final int LOGIN_SUCCESS = 0; public static final int OK = 0;
+    public static final int LOGIN_FAILED_CLIENT = 1; public static final int OUTDATED_CLIENT = 1;
+    public static final int LOGIN_FAILED_SERVER = 2; public static final int OUTDATED_SERVER = 2;
+    public static final int PLAYER_SPAWN = 3; public static final int SPAWNED = 3;
+    public static final int LOGIN_FAILED_INVALID_TENANT = 4; public static final int INVALID_TENANT = 4;
+    public static final int LOGIN_FAILED_VANILLA_EDU = 5; public static final int EDITION_DISMATCH_EDU_TO_VANILLA = 5;
+    public static final int LOGIN_FAILED_EDU_VANILLA = 6; public static final int EDITION_DISMATCH_VANILLA_TO_EDU = 6;
 
     public int status;
 
     @Override
     public void decode() {
-
+        this.status = this.getInt();
     }
 
     @Override

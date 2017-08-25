@@ -790,7 +790,7 @@ public abstract class Entity extends Location implements Metadatable {
     public void sendPotionEffects(Player player) {
         for (Effect effect : this.effects.values()) {
             MobEffectPacket pk = new MobEffectPacket();
-            pk.eid = this.getId();
+            pk.entityRuntimeId = this.getId();
             pk.effectId = effect.getId();
             pk.amplifier = effect.getAmplifier();
             pk.particles = effect.isVisible();
@@ -807,7 +807,7 @@ public abstract class Entity extends Location implements Metadatable {
 
     public void sendData(Player player, EntityMetadata data) {
         SetEntityDataPacket pk = new SetEntityDataPacket();
-        pk.eid = this.getId();
+        pk.entityRuntimeId = this.getId();
         pk.metadata = data == null ? this.dataProperties : data;
 
         player.dataPacket(pk);
@@ -819,7 +819,7 @@ public abstract class Entity extends Location implements Metadatable {
 
     public void sendData(Player[] players, EntityMetadata data) {
         SetEntityDataPacket pk = new SetEntityDataPacket();
-        pk.eid = this.getId();
+        pk.entityRuntimeId = this.getId();
         pk.metadata = data == null ? this.dataProperties : data;
 
         for (Player player : players) {
@@ -836,7 +836,7 @@ public abstract class Entity extends Location implements Metadatable {
     public void despawnFrom(Player player) {
         if (this.hasSpawned.containsKey(player.getLoaderId())) {
             RemoveEntityPacket pk = new RemoveEntityPacket();
-            pk.eid = this.getId();
+            pk.entityUniqueId = this.getId();
             player.dataPacket(pk);
             this.hasSpawned.remove(player.getLoaderId());
         }
@@ -1139,7 +1139,7 @@ public abstract class Entity extends Location implements Metadatable {
         int chunkX = this.getFloorX() >> 16;
         int chunkZ = this.getFloorZ() >> 16;
         SetEntityMotionPacket pk = new SetEntityMotionPacket();
-        pk.eid = this.getId();
+        pk.entityRuntimeId = this.getId();
         pk.motionX = (float) motionX;
         pk.motionY = (float) motionY;
         pk.motionZ = (float) motionZ;

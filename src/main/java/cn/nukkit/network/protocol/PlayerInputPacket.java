@@ -7,6 +7,11 @@ public class PlayerInputPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.PLAYER_INPUT_PACKET;
 
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
     public float motionX;
     public float motionY;
 
@@ -23,12 +28,9 @@ public class PlayerInputPacket extends DataPacket {
 
     @Override
     public void encode() {
-
+        this.putLFloat(this.motionX);
+        this.putLFloat(this.motionY);
+        this.putBoolean(this.unknownBool1);
+        this.putBoolean(this.unknownBool2);
     }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
-
 }

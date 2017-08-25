@@ -14,28 +14,28 @@ public class MobEquipmentPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public long eid;
+    public long entityRuntimeId;
     public Item item;
-    public int slot;
-    public int selectedSlot;
-    public int windowId;
+    public int inventorySlot;
+    public int hotbarSlot;
+    public int windowId = 0;
 
     @Override
     public void decode() {
-        this.eid = this.getVarLong(); //EntityRuntimeID
+        this.entityRuntimeId = this.getUnsignedVarLong();
         this.item = this.getSlot();
-        this.slot = this.getByte();
-        this.selectedSlot = this.getByte();
+        this.inventorySlot = this.getByte();
+        this.hotbarSlot = this.getByte();
         this.windowId = this.getByte();
     }
 
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.eid); //EntityRuntimeID
+        this.putUnsignedVarLong(this.entityRuntimeId);
         this.putSlot(this.item);
-        this.putByte((byte) this.slot);
-        this.putByte((byte) this.selectedSlot);
+        this.putByte((byte) this.inventorySlot);
+        this.putByte((byte) this.hotbarSlot);
         this.putByte((byte) this.windowId);
     }
 }

@@ -133,7 +133,7 @@ public class CraftingDataPacket extends DataPacket {
         $recipeCount = $this->getUnsignedVarInt();
         for($i = 0; $i < $recipeCount; ++$i){
             $entry = [];
-            $entry["type"] = $recipeType = $this->getVarInt();
+            $entry["types"] = $recipeType = $this->getVarInt();
             switch($recipeType){
                 case self::ENTRY_SHAPELESS:
                 case self::ENTRY_SHULKER_BOX:
@@ -177,7 +177,7 @@ public class CraftingDataPacket extends DataPacket {
                     $entry["uuid"] = $this->getUUID()->toString();
                     break;
                 default:
-                    throw new \UnexpectedValueException("Unhandled recipe type $recipeType!"); //do not continue attempting to decode
+                    throw new \UnexpectedValueException("Unhandled recipe types $recipeType!"); //do not continue attempting to decode
             }
             $entries[] = $entry;
         }

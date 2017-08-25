@@ -108,7 +108,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * Check type of section element defined by key. Return true this element is ConfigSection
+     * Check types of section element defined by key. Return true this element is ConfigSection
      *
      * @param key
      * @return
@@ -193,7 +193,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * Check type of section element defined by key. Return true this element is Integer
+     * Check types of section element defined by key. Return true this element is Integer
      *
      * @param key
      * @return
@@ -225,7 +225,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * Check type of section element defined by key. Return true this element is Long
+     * Check types of section element defined by key. Return true this element is Long
      *
      * @param key
      * @return
@@ -257,7 +257,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * Check type of section element defined by key. Return true this element is Double
+     * Check types of section element defined by key. Return true this element is Double
      *
      * @param key
      * @return
@@ -290,7 +290,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * Check type of section element defined by key. Return true this element is String
+     * Check types of section element defined by key. Return true this element is String
      *
      * @param key
      * @return
@@ -322,7 +322,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * Check type of section element defined by key. Return true this element is Integer
+     * Check types of section element defined by key. Return true this element is Integer
      *
      * @param key
      * @return
@@ -354,7 +354,7 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * Check type of section element defined by key. Return true this element is List
+     * Check types of section element defined by key. Return true this element is List
      *
      * @param key
      * @return

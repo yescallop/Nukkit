@@ -7,6 +7,11 @@ public class SetDifficultyPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.SET_DIFFICULTY_PACKET;
 
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
     public int difficulty;
 
     @Override
@@ -19,10 +24,4 @@ public class SetDifficultyPacket extends DataPacket {
         this.reset();
         this.putUnsignedVarInt(this.difficulty);
     }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
-
 }

@@ -278,7 +278,7 @@ public class Server {
                 put("generator-settings", "");
                 put("level-name", "world");
                 put("level-seed", "");
-                put("level-type", "DEFAULT");
+                put("level-types", "DEFAULT");
                 put("enable-query", true);
                 put("enable-rcon", false);
                 put("rcon.password", Base64.getEncoder().encodeToString(UUID.randomUUID().toString().replace("-", "").getBytes()).substring(3, 13));
@@ -838,19 +838,19 @@ public class Server {
         }
     }
 
-    public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin) {
-        this.updatePlayerListData(uuid, entityId, name, skin, this.playerList.values());
+    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, String skinId, String skinData, String capeData, String geometryModel, String xboxUserId) {
+        this.updatePlayerListData(uuid, entityUniqueId, username, skinId, skinData, capeData, geometryModel, xboxUserId, this.playerList.values());
     }
 
-    public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin, Player[] players) {
+    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, String skinId, String skinData, String capeData, String geometryModel, String xboxUserId, Player[] players) {
         PlayerListPacket pk = new PlayerListPacket();
         pk.type = PlayerListPacket.TYPE_ADD;
-        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid, entityId, name, skin)};
+        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid, entityUniqueId, username, skinId, skinData, capeData, geometryModel, xboxUserId)};
         Server.broadcastPacket(players, pk);
     }
 
-    public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin, Collection<Player> players) {
-        this.updatePlayerListData(uuid, entityId, name, skin,
+    public void updatePlayerListData(UUID uuid, long entityUniqueId, String username, String skinId, String skinData, String capeData, String geometryModel, String xboxUserId, Collection<Player> players) {
+        this.updatePlayerListData(uuid, entityUniqueId, username, skinId, skinData, capeData, geometryModel, xboxUserId,
                 players.stream()
                         .filter(p -> !p.getUniqueId().equals(uuid))
                         .toArray(Player[]::new));
@@ -1176,7 +1176,7 @@ public class Server {
     }
 
     public String getLevelType() {
-        return this.getPropertyString("level-type", "DEFAULT");
+        return this.getPropertyString("level-types", "DEFAULT");
     }
 
     public boolean getGenerateStructures() {

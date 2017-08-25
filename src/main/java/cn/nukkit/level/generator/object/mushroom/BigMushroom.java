@@ -27,7 +27,7 @@ public class BigMushroom extends BasicGenerator {
     public static final int BROWN = 0;
     public static final int RED = 1;
     /**
-     * The mushroom type. 0 for brown, 1 for red.
+     * The mushroom types. 0 for brown, 1 for red.
      */
     private int mushroomType;
 

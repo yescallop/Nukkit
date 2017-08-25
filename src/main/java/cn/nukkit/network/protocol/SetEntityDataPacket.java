@@ -15,18 +15,19 @@ public class SetEntityDataPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public long eid;
+    public long entityRuntimeId;
     public EntityMetadata metadata;
 
     @Override
     public void decode() {
-
+        this.entityRuntimeId = this.getUnsignedVarLong();
+        this.metadata = Binary.readMetadata(this.getByteArray());
     }
 
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.eid);
+        this.putVarLong(this.entityRuntimeId);
         this.put(Binary.writeMetadata(this.metadata));
     }
 }

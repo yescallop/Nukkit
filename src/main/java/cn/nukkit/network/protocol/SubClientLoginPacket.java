@@ -2,18 +2,22 @@ package cn.nukkit.network.protocol;
 
 public class SubClientLoginPacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.SUB_CLIENT_LOGIN_PACKET;
+
     @Override
     public byte pid() {
-        return ProtocolInfo.SUB_CLIENT_LOGIN_PACKET;
+        return NETWORK_ID;
     }
+
+    public String connectionRequestData;
 
     @Override
     public void decode() {
-
+        this.connectionRequestData = this.getString();
     }
 
     @Override
     public void encode() {
-        //TODO
+        this.putString(this.connectionRequestData);
     }
 }

@@ -59,7 +59,7 @@ public class RegionLoader extends BaseRegionLoader {
             this.locationTable.put(index, table);
             this.writeLocationIndex(index);
         } else if (compression != COMPRESSION_ZLIB && compression != COMPRESSION_GZIP) {
-            MainLogger.getLogger().error("Invalid compression type");
+            MainLogger.getLogger().error("Invalid compression types");
             return null;
         }
 

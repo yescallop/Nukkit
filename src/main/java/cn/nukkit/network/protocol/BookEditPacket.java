@@ -55,7 +55,7 @@ public class BookEditPacket extends DataPacket {
                 this.author = this.getString();
                 break;
             default:
-                // throw new Exception("Unknown book edit type " + this.type + "!");
+                // throw new Exception("Unknown book edit types " + this.types + "!");
         }
     }
 
@@ -83,7 +83,7 @@ public class BookEditPacket extends DataPacket {
                 this.putString(this.author);
                 break;
             default:
-                // throw new Exception("Unknown book edit type " + this.type + "!");
+                // throw new Exception("Unknown book edit types " + this.types + "!");
         }
     }
 }
