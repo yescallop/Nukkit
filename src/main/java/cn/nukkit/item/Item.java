@@ -601,7 +601,7 @@ public class Item implements Cloneable {
 
     public Item(int id, Integer meta, int count, String name) {
         this.id = id & 0xffff;
-        if (meta != null) {
+        if (meta != null && meta >= 0) {
             this.meta = meta & 0xffff;
         } else {
             this.hasMeta = false;
@@ -1848,7 +1848,7 @@ public class Item implements Cloneable {
         return lines.toArray(new String[0]);
     }
 
-    public void setLore(String... lines) {
+    public Item setLore(String... lines) {
         CompoundTag tag;
         if (!this.hasCompoundTag()) {
             tag = new CompoundTag();
@@ -1868,6 +1868,7 @@ public class Item implements Cloneable {
         }
 
         this.setNamedTag(tag);
+        return this;
     }
 
     public Tag getNamedTagEntry(String name) {
