@@ -4041,7 +4041,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public void sendPosition(Vector3 pos, double yaw, double pitch, int mode, Player[] targets) {
         MovePlayerPacket pk = new MovePlayerPacket();
-        pk.entityRuntimeId = this.getId();
+        pk.entityUniqueId = this.getId();
         pk.x = (float) pos.x;
         pk.y = (float) (pos.y + this.getEyeHeight());
         pk.z = (float) pos.z;
@@ -4053,7 +4053,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (targets != null) {
             Server.broadcastPacket(targets, pk);
         } else {
-            pk.entityRuntimeId = this.id;
+            pk.entityUniqueId = this.id;
             this.dataPacket(pk);
         }
     }

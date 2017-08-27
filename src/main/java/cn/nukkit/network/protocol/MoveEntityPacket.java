@@ -14,19 +14,19 @@ public class MoveEntityPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public long entityRuntimeId;
+    public long entityUniqueId;
     public double x;
     public double y;
     public double z;
     public float yaw;
     public float headYaw;
     public float pitch;
-    public boolean onGround = false;
+    public boolean onGround = true;
     public boolean teleport = false;
 
     @Override
     public void decode() {
-        this.entityRuntimeId = this.getVarLong();
+        this.entityUniqueId = this.getVarLong();
         Vector3f v = this.getVector3f();
         this.x = v.x;
         this.y = v.y;
@@ -41,7 +41,7 @@ public class MoveEntityPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.entityRuntimeId);
+        this.putVarLong(this.entityUniqueId);
         this.putVector3f((float) this.x, (float) this.y, (float) this.z);
         this.putByte((byte) (this.pitch / (360D / 256D)));
         this.putByte((byte) (this.headYaw / (360D / 256D)));

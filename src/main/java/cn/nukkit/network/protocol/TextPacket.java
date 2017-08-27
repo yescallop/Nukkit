@@ -27,7 +27,7 @@ public class TextPacket extends DataPacket {
     public String message = "";
     public String[] parameters = new String[0];
     public boolean isLocalized = false;
-    public String xboxUserId;
+    public String xboxUserId = "";
 
     @Override
     public void decode() {
