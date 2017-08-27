@@ -31,7 +31,7 @@ public class ResourcePacksInfoPacket extends DataPacket {
             this.putString(entry.getPackVersion());
             this.putLLong(entry.getPackSize());
             this.putString(""); //unknown
-            //this.putString(""); //unknown
+            this.putString(""); //unknown
         }
 
         this.putLShort(this.resourcePackEntries.length);
@@ -40,7 +40,7 @@ public class ResourcePacksInfoPacket extends DataPacket {
             this.putString(entry.getPackVersion());
             this.putLLong(entry.getPackSize());
             this.putString(""); //unknown
-            //this.putString(""); //unknown
+            this.putString(""); //unknown
         }
     }
 }
