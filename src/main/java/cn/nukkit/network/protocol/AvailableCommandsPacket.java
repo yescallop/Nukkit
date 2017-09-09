@@ -28,6 +28,7 @@ public class AvailableCommandsPacket extends DataPacket {
     public static final int  ARG_TYPE_TEXT      = 0x12;
     public static final int  ARG_TYPE_JSON      = 0x15;
     public static final int  ARG_TYPE_COMMAND   = 0x1c;
+    public static final int ARG_FLAG_VALID      = 0x100000;
     public static final int  ARG_FLAG_ENUM      = 0x200000;
     public static final int  ARG_FLAG_TEMPLATE  = 0x1000000;
 
