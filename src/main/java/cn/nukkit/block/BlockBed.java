@@ -176,7 +176,7 @@ public class BlockBed extends BlockTransparent {
     }
 
     private void createBlockEntity(Vector3 pos, int color) {
-        CompoundTag nbt = BlockEntity.getDefaultCompound(pos, BlockEntity.BED);
+        CompoundTag nbt = BlockEntity.getDefaultNBT(pos, BlockEntity.BED);
         nbt.putByte("color", color);
 
         new BlockEntityBed(this.level.getChunk(pos.getFloorX() >> 4, pos.getFloorZ() >> 4), nbt);

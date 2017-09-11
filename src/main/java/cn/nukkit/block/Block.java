@@ -126,7 +126,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int STONE_PRESSURE_PLATE = 70;
     public static final int IRON_DOOR_BLOCK = 71;
     public static final int WOODEN_PRESSURE_PLATE = 72;
-
     public static final int REDSTONE_ORE = 73;
     public static final int GLOWING_REDSTONE_ORE = 74;
     public static final int LIT_REDSTONE_ORE = 74;
@@ -211,7 +210,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int BIRCH_WOODEN_STAIRS = 135;
     public static final int JUNGLE_WOOD_STAIRS = 136;
     public static final int JUNGLE_WOODEN_STAIRS = 136;
-
+    public static final int COMMAND_BLOCK = 137;
     public static final int BEACON = 138;
     public static final int COBBLE_WALL = 139;
     public static final int STONE_WALL = 139;
@@ -264,7 +263,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int COAL_BLOCK = 173;
     public static final int PACKED_ICE = 174;
     public static final int DOUBLE_PLANT = 175;
-
+    public static final int STANDING_BANNER = 176;
+    public static final int WALL_BANNER = 177;
     public static final int DAYLIGHT_DETECTOR_INVERTED = 178;
     public static final int RED_SANDSTONE = 179;
     public static final int RED_SANDSTONE_STAIRS = 180;
@@ -275,6 +275,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int FENCE_GATE_JUNGLE = 185;
     public static final int FENCE_GATE_DARK_OAK = 186;
     public static final int FENCE_GATE_ACACIA = 187;
+    public static final int REPEATING_COMMAND_BLOCK = 188;
+    public static final int CHAIN_COMMAND_BLOCK = 189;
 
     public static final int SPRUCE_DOOR_BLOCK = 193;
     public static final int BIRCH_DOOR_BLOCK = 194;
@@ -285,8 +287,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int ITEM_FRAME_BLOCK = 199;
     public static final int CHORUS_FLOWER = 200;
     public static final int PURPUR_BLOCK = 201;
-
-    public static final int PURPUR_STAIRS = 203;
+    public static final int PURPUR_STAIRS = 202;
     public static final int DOUBLE_PURPUR_SLAB = 204;
     public static final int PURPUR_SLAB = 205;
     public static final int END_BRICKS = 206;
@@ -294,6 +295,11 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int ICE_FROSTED = 207;
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
+
+    public static final int MAGMA = 213;
+    //public static final int NETHER_WART_BLOCK = 214; idk how to name that :D
+    public static final int RED_NETHER_BRICK = 215;
+    public static final int BONE_BLOCK = 216;
 
     public static final int SHULKER_BOX = 218;
     public static final int PURPLE_GLAZED_TERRACOTTA = 219;
@@ -324,8 +330,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int NETHER_REACTOR = 247; //Should not be removed
 
     public static final int PISTON_EXTENSION = 250;
-
     public static final int OBSERVER = 251;
+    public static final int STRUCTURE_BLOCK = 252;
 
     public static Class[] list = null;
     public static Block[] fullList = null;
@@ -529,7 +535,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[COAL_BLOCK] = BlockCoal.class; //173
             list[PACKED_ICE] = BlockIcePacked.class; //174
             list[DOUBLE_PLANT] = BlockDoublePlant.class; //175
-
+            list[STANDING_BANNER] = BlockStandingBanner.class; //176
+            list[WALL_BANNER] = BlockWallBanner.class; // 177
             list[DAYLIGHT_DETECTOR_INVERTED] = BlockDaylightDetectorInverted.class; //178
             list[RED_SANDSTONE] = BlockRedSandstone.class; //179
             list[RED_SANDSTONE_STAIRS] = BlockStairsRedSandstone.class; //180
@@ -668,6 +675,77 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             block.level = pos.level;
         }
         return block;
+    }
+
+    private static double toolBreakTimeBonus0(
+            int toolType, int toolTier, boolean isWoolBlock, boolean isCobweb) {
+        if (toolType == ItemTool.TYPE_SWORD) return isCobweb ? 15.0 : 1.0;
+        if (toolType == ItemTool.TYPE_SHEARS) return isWoolBlock ? 5.0 : 15.0;
+        if (toolType == ItemTool.TYPE_NONE) return 1.0;
+        switch (toolTier) {
+            case ItemTool.TIER_WOODEN:
+                return 2.0;
+            case ItemTool.TIER_STONE:
+                return 4.0;
+            case ItemTool.TIER_IRON:
+                return 6.0;
+            case ItemTool.TIER_DIAMOND:
+                return 8.0;
+            case ItemTool.TIER_GOLD:
+                return 12.0;
+            default:
+                return 1.0;
+        }
+    }
+
+    private static double speedBonusByEfficiencyLore0(int efficiencyLoreLevel) {
+        if (efficiencyLoreLevel == 0) return 0;
+        return efficiencyLoreLevel * efficiencyLoreLevel + 1;
+    }
+
+    private static double speedRateByHasteLore0(int hasteLoreLevel) {
+        return 1.0 + (0.2 * hasteLoreLevel);
+    }
+
+    private static int toolType0(Item item) {
+        if (item.isSword()) return ItemTool.TYPE_SWORD;
+        if (item.isShovel()) return ItemTool.TYPE_SHOVEL;
+        if (item.isPickaxe()) return ItemTool.TYPE_PICKAXE;
+        if (item.isAxe()) return ItemTool.TYPE_AXE;
+        if (item.isShears()) return ItemTool.TYPE_SHEARS;
+        return ItemTool.TYPE_NONE;
+    }
+
+    private static boolean correctTool0(int blockToolType, Item item) {
+        return (blockToolType == ItemTool.TYPE_SWORD && item.isSword()) ||
+                (blockToolType == ItemTool.TYPE_SHOVEL && item.isShovel()) ||
+                (blockToolType == ItemTool.TYPE_PICKAXE && item.isPickaxe()) ||
+                (blockToolType == ItemTool.TYPE_AXE && item.isAxe()) ||
+                (blockToolType == ItemTool.TYPE_SHEARS && item.isShears()) ||
+                blockToolType == ItemTool.TYPE_NONE;
+    }
+
+    //http://minecraft.gamepedia.com/Breaking
+    private static double breakTime0(double blockHardness, boolean correctTool, boolean canHarvestWithHand,
+                                     int blockId, int toolType, int toolTier, int efficiencyLoreLevel, int hasteEffectLevel,
+                                     boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround) {
+        double baseTime = ((correctTool || canHarvestWithHand) ? 1.5 : 5.0) * blockHardness;
+        double speed = 1.0 / baseTime;
+        boolean isWoolBlock = blockId == Block.WOOL, isCobweb = blockId == Block.COBWEB;
+        if (correctTool) speed *= toolBreakTimeBonus0(toolType, toolTier, isWoolBlock, isCobweb);
+        speed += speedBonusByEfficiencyLore0(efficiencyLoreLevel);
+        speed *= speedRateByHasteLore0(hasteEffectLevel);
+        if (insideOfWaterWithoutAquaAffinity) speed *= 0.2;
+        if (outOfWaterButNotOnGround) speed *= 0.2;
+        return 1.0 / speed;
+    }
+
+    public static boolean equals(Block b1, Block b2) {
+        return equals(b1, b2, true);
+    }
+
+    public static boolean equals(Block b1, Block b2, boolean checkDamage) {
+        return b1 != null && b2 != null && b1.getId() == b2.getId() && (!checkDamage || b1.getDamage() == b2.getDamage());
     }
 
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz) {
@@ -819,63 +897,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
                     this.toItem()
             };
         }
-    }
-
-    private static double toolBreakTimeBonus0(
-            int toolType, int toolTier, boolean isWoolBlock, boolean isCobweb) {
-        if(toolType == ItemTool.TYPE_SWORD) return isCobweb ? 15.0: 1.0;
-        if(toolType == ItemTool.TYPE_SHEARS) return isWoolBlock ? 5.0: 15.0;
-        if(toolType == ItemTool.TYPE_NONE) return 1.0;
-        switch (toolTier) {
-            case ItemTool.TIER_WOODEN: return 2.0;
-            case ItemTool.TIER_STONE: return 4.0;
-            case ItemTool.TIER_IRON: return 6.0;
-            case ItemTool.TIER_DIAMOND: return 8.0;
-            case ItemTool.TIER_GOLD: return 12.0;
-            default: return 1.0;
-        }
-    }
-
-    private static double speedBonusByEfficiencyLore0(int efficiencyLoreLevel) {
-        if(efficiencyLoreLevel == 0) return 0;
-        return efficiencyLoreLevel * efficiencyLoreLevel + 1;
-    }
-
-    private static double speedRateByHasteLore0(int hasteLoreLevel) {
-        return 1.0 + (0.2 * hasteLoreLevel);
-    }
-
-    private static int toolType0(Item item) {
-        if(item.isSword())      return ItemTool.TYPE_SWORD      ;
-        if(item.isShovel())     return ItemTool.TYPE_SHOVEL     ;
-        if(item.isPickaxe())    return ItemTool.TYPE_PICKAXE    ;
-        if(item.isAxe())        return ItemTool.TYPE_AXE        ;
-        if(item.isShears())     return ItemTool.TYPE_SHEARS     ;
-        return ItemTool.TYPE_NONE;
-    }
-
-    private static boolean correctTool0(int blockToolType, Item item) {
-        return (blockToolType == ItemTool.TYPE_SWORD    && item.isSword()   ) ||
-                (blockToolType == ItemTool.TYPE_SHOVEL  && item.isShovel()  ) ||
-                (blockToolType == ItemTool.TYPE_PICKAXE && item.isPickaxe() ) ||
-                (blockToolType == ItemTool.TYPE_AXE     && item.isAxe()     ) ||
-                (blockToolType == ItemTool.TYPE_SHEARS  && item.isShears()  ) ||
-                blockToolType == ItemTool.TYPE_NONE;
-    }
-
-    //http://minecraft.gamepedia.com/Breaking
-    private static double breakTime0(double blockHardness, boolean correctTool, boolean canHarvestWithHand,
-                                     int blockId, int toolType, int toolTier, int efficiencyLoreLevel, int hasteEffectLevel,
-                                     boolean insideOfWaterWithoutAquaAffinity, boolean outOfWaterButNotOnGround) {
-        double baseTime = ((correctTool || canHarvestWithHand) ? 1.5 : 5.0) * blockHardness;
-        double speed = 1.0 / baseTime;
-        boolean isWoolBlock = blockId == Block.WOOL, isCobweb = blockId == Block.COBWEB;
-        if(correctTool) speed *= toolBreakTimeBonus0(toolType, toolTier, isWoolBlock, isCobweb);
-        speed += speedBonusByEfficiencyLore0(efficiencyLoreLevel);
-        speed *= speedRateByHasteLore0(hasteEffectLevel);
-        if(insideOfWaterWithoutAquaAffinity) speed *= 0.2;
-        if(outOfWaterButNotOnGround) speed *= 0.2;
-        return 1.0 / speed;
     }
 
     public double getBreakTime(Item item, Player player) {
@@ -1190,14 +1211,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
 
     public boolean isNormalBlock() {
         return !isTransparent() && isSolid() && !isPowerSource();
-    }
-
-    public static boolean equals(Block b1, Block b2) {
-        return equals(b1, b2, true);
-    }
-
-    public static boolean equals(Block b1, Block b2, boolean checkDamage) {
-        return b1 != null && b2 != null && b1.getId() == b2.getId() && (!checkDamage || b1.getDamage() == b2.getDamage());
     }
 
     public Item toItem() {

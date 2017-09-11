@@ -62,4 +62,25 @@ public class NukkitMath {
         return d0 > d1 ? d0 : d1;
     }
 
+    public static double max(double... numbers) {
+        int i = 0;
+        double max = numbers[i];
+
+        while (++i < numbers.length)
+            if (numbers[i] > max)
+                max = numbers[i];
+
+        return max;
+    }
+
+    public static int max(int... numbers) {
+        int i = 0;
+        int max = numbers[i];
+
+        while (++i < numbers.length)
+            if (numbers[i] > max)
+                max = numbers[i];
+
+        return max;
+    }
 }

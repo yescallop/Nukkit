@@ -30,22 +30,6 @@ import java.util.regex.Pattern;
  */
 public class Item implements Cloneable {
 
-    private static CompoundTag parseCompoundTag(byte[] tag) {
-        try {
-            return NBTIO.read(tag, ByteOrder.LITTLE_ENDIAN);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private byte[] writeCompoundTag(CompoundTag tag) {
-        try {
-            return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     //All Block IDs are here too
     public static final int AIR = 0;
     public static final int STONE = 1;
@@ -145,7 +129,6 @@ public class Item implements Cloneable {
     public static final int STONE_PRESSURE_PLATE = 70;
     public static final int IRON_DOOR_BLOCK = 71;
     public static final int WOODEN_PRESSURE_PLATE = 72;
-
     public static final int REDSTONE_ORE = 73;
     public static final int GLOWING_REDSTONE_ORE = 74;
     public static final int LIT_REDSTONE_ORE = 74;
@@ -213,6 +196,7 @@ public class Item implements Cloneable {
     public static final int DRAGON_EGG = 122;
     public static final int REDSTONE_LAMP = 123;
     public static final int LIT_REDSTONE_LAMP = 124;
+    //Note: dropper CAN NOT BE HARVESTED WITH HAND -- canHarvestWithHand method should be overridden FALSE.
     public static final int DROPPER = 125;
     public static final int ACTIVATOR_RAIL = 126;
     public static final int COCOA = 127;
@@ -229,7 +213,7 @@ public class Item implements Cloneable {
     public static final int BIRCH_WOODEN_STAIRS = 135;
     public static final int JUNGLE_WOOD_STAIRS = 136;
     public static final int JUNGLE_WOODEN_STAIRS = 136;
-
+    public static final int COMMAND_BLOCK = 137;
     public static final int BEACON = 138;
     public static final int COBBLE_WALL = 139;
     public static final int STONE_WALL = 139;
@@ -272,7 +256,6 @@ public class Item implements Cloneable {
     public static final int DARK_OAK_WOOD_STAIRS = 164;
     public static final int DARK_OAK_WOODEN_STAIRS = 164;
     public static final int SLIME_BLOCK = 165;
-
     public static final int IRON_TRAPDOOR = 167;
     public static final int PRISMARINE = 168;
     public static final int SEA_LANTERN = 169;
@@ -282,7 +265,8 @@ public class Item implements Cloneable {
     public static final int COAL_BLOCK = 173;
     public static final int PACKED_ICE = 174;
     public static final int DOUBLE_PLANT = 175;
-
+    public static final int STANDING_BANNER = 176;
+    public static final int WALL_BANNER = 177;
     public static final int DAYLIGHT_DETECTOR_INVERTED = 178;
     public static final int RED_SANDSTONE = 179;
     public static final int RED_SANDSTONE_STAIRS = 180;
@@ -293,7 +277,8 @@ public class Item implements Cloneable {
     public static final int FENCE_GATE_JUNGLE = 185;
     public static final int FENCE_GATE_DARK_OAK = 186;
     public static final int FENCE_GATE_ACACIA = 187;
-
+    public static final int REPEATING_COMMAND_BLOCK = 188;
+    public static final int CHAIN_COMMAND_BLOCK = 189;
     public static final int SPRUCE_DOOR_BLOCK = 193;
     public static final int BIRCH_DOOR_BLOCK = 194;
     public static final int JUNGLE_DOOR_BLOCK = 195;
@@ -303,14 +288,18 @@ public class Item implements Cloneable {
     public static final int ITEM_FRAME_BLOCK = 199;
     public static final int CHORUS_FLOWER = 200;
     public static final int PURPUR_BLOCK = 201;
-
-    public static final int PURPUR_STAIRS = 203;
-
+    public static final int PURPUR_STAIRS = 202;
+    public static final int DOUBLE_PURPUR_SLAB = 204;
+    public static final int PURPUR_SLAB = 205;
     public static final int END_BRICKS = 206;
-
+    //Note: frosted ice CAN NOT BE HARVESTED WITH HAND -- canHarvestWithHand method should be overridden FALSE.
+    public static final int ICE_FROSTED = 207;
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
-
+    public static final int MAGMA = 213;
+    //public static final int NETHER_WART_BLOCK = 214; idk how to name that :D
+    public static final int RED_NETHER_BRICK = 215;
+    public static final int BONE_BLOCK = 216;
     public static final int SHULKER_BOX = 218;
     public static final int PURPLE_GLAZED_TERRACOTTA = 219;
     public static final int WHITE_GLAZED_TERRACOTTA = 220;
@@ -330,7 +319,6 @@ public class Item implements Cloneable {
     public static final int BLACK_GLAZED_TERRACOTTA = 235;
     public static final int CONCRETE = 236;
     public static final int CONCRETE_POWDER = 237;
-
     public static final int CHORUS_PLANT = 240;
     public static final int STAINED_GLASS = 241;
     public static final int PODZOL = 243;
@@ -338,15 +326,13 @@ public class Item implements Cloneable {
     public static final int STONECUTTER = 245;
     public static final int GLOWING_OBSIDIAN = 246;
     public static final int NETHER_REACTOR = 247; //Should not be removed
-
     public static final int PISTON_EXTENSION = 250;
-
     public static final int OBSERVER = 251;
-
-    //Normal Item IDs
-
+    public static final int STRUCTURE_BLOCK = 252;
     public static final int IRON_SHOVEL = 256;
     public static final int IRON_PICKAXE = 257;
+
+    //Normal Item IDs
     public static final int IRON_AXE = 258;
     public static final int FLINT_STEEL = 259;
     public static final int FLINT_AND_STEEL = 259;
@@ -423,7 +409,6 @@ public class Item implements Cloneable {
     public static final int SIGN = 323;
     public static final int WOODEN_DOOR = 324;
     public static final int BUCKET = 325;
-
     public static final int MINECART = 328;
     public static final int SADDLE = 329;
     public static final int IRON_DOOR = 330;
@@ -432,7 +417,6 @@ public class Item implements Cloneable {
     public static final int SNOWBALL = 332;
     public static final int BOAT = 333;
     public static final int LEATHER = 334;
-
     public static final int BRICK = 336;
     public static final int CLAY = 337;
     public static final int SUGARCANE = 338;
@@ -442,7 +426,6 @@ public class Item implements Cloneable {
     public static final int BOOK = 340;
     public static final int SLIMEBALL = 341;
     public static final int MINECART_WITH_CHEST = 342;
-
     public static final int EGG = 344;
     public static final int COMPASS = 345;
     public static final int FISHING_ROD = 346;
@@ -490,7 +473,8 @@ public class Item implements Cloneable {
     public static final int SPAWN_EGG = 383;
     public static final int EXPERIENCE_BOTTLE = 384;
     public static final int FIRE_CHARGE = 385;
-
+    public static final int WRITABLE_BOOK = 386;
+    public static final int WRITTEN_BOOK = 387;
     public static final int EMERALD = 388;
     public static final int ITEM_FRAME = 389;
     public static final int FLOWER_POT = 390;
@@ -507,7 +491,8 @@ public class Item implements Cloneable {
     public static final int CARROT_ON_A_STICK = 398;
     public static final int NETHER_STAR = 399;
     public static final int PUMPKIN_PIE = 400;
-
+    public static final int FIREWORKS = 401;
+    public static final int FIREWORKS_CHARGE = 402;
     public static final int ENCHANTED_BOOK = 403;
     public static final int ENCHANT_BOOK = 403;
     public static final int COMPARATOR = 404;
@@ -532,7 +517,7 @@ public class Item implements Cloneable {
     public static final int PRISMARINE_CRYSTALS = 422;
     public static final int RAW_MUTTON = 423;
     public static final int COOKED_MUTTON = 424;
-
+    public static final int ARMOR_STAND = 425;
     public static final int END_CRYSTAL = 426;
     public static final int SPRUCE_DOOR = 427;
     public static final int BIRCH_DOOR = 428;
@@ -541,16 +526,13 @@ public class Item implements Cloneable {
     public static final int DARK_OAK_DOOR = 431;
     public static final int CHORUS_FRUIT = 432;
     public static final int POPPED_CHORUS_FRUIT = 433;
-
     public static final int DRAGON_BREATH = 437;
     public static final int SPLASH_POTION = 438;
-
     public static final int LINGERING_POTION = 441;
-
+    public static final int MINECART_WITH_COMMAND_BLOCK = 443;
     public static final int ELYTRA = 444;
-
     public static final int SHULKER_SHELL = 445;
-
+    public static final int BANNER = 446;
     public static final int BEETROOT = 457;
     public static final int BEETROOT_SEEDS = 458;
     public static final int BEETROOT_SEED = 458;
@@ -559,9 +541,7 @@ public class Item implements Cloneable {
     public static final int CLOWNFISH = 461;
     public static final int PUFFERFISH = 462;
     public static final int COOKED_SALMON = 463;
-
     public static final int GOLDEN_APPLE_ENCHANTED = 466;
-
     public static final int RECORD_13 = 500;
     public static final int RECORD_CAT = 501;
     public static final int RECORD_BLOCKS = 502;
@@ -574,19 +554,17 @@ public class Item implements Cloneable {
     public static final int RECORD_WARD = 509;
     public static final int RECORD_11 = 510;
     public static final int RECORD_WAIT = 511;
-
+    private static final ArrayList<Item> creative = new ArrayList<>();
     public static Class[] list = null;
-
-    protected Block block = null;
     protected final int id;
+    public int count;
+    protected Block block = null;
     protected int meta;
     protected boolean hasMeta = true;
-    private byte[] tags = new byte[0];
-    private CompoundTag cachedNBT = null;
-    public int count;
     protected int durability = 0;
     protected String name;
-
+    private byte[] tags = new byte[0];
+    private CompoundTag cachedNBT = null;
     public Item(int id) {
         this(id, 0, 1, "Unknown");
     }
@@ -614,12 +592,12 @@ public class Item implements Cloneable {
         }*/
     }
 
-    public boolean hasMeta() {
-        return hasMeta;
-    }
-
-    public boolean canBeActivated() {
-        return false;
+    private static CompoundTag parseCompoundTag(byte[] tag) {
+        try {
+            return NBTIO.read(tag, ByteOrder.LITTLE_ENDIAN);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void init() {
@@ -806,8 +784,8 @@ public class Item implements Cloneable {
             //TODO: list[LINGERING_POTION] = ItemPotionLingering.class; //441
 
             list[ELYTRA] = ItemElytra.class; //444
-
             //TODO: list[SHULKER_SHELL] = ItemShulkerShell.class; //445
+            list[BANNER] = ItemBanner.class; //446
 
             list[BEETROOT] = ItemBeetroot.class; //457
             list[BEETROOT_SEEDS] = ItemSeedsBeetroot.class; //458
@@ -828,8 +806,6 @@ public class Item implements Cloneable {
 
         initCreativeItems();
     }
-
-    private static final ArrayList<Item> creative = new ArrayList<>();
 
     private static void initCreativeItems() {
         clearCreativeItems();
@@ -1159,7 +1135,7 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.IRON_HORSE_ARMOR, 0));
         addCreativeItem(Item.get(Item.GOLD_HORSE_ARMOR, 0));
         addCreativeItem(Item.get(Item.DIAMOND_HORSE_ARMOR, 0));
-        
+
         addCreativeItem(Item.get(Item.SPAWN_EGG, 10)); //Chicken
         addCreativeItem(Item.get(Item.SPAWN_EGG, 11)); //Cow
         addCreativeItem(Item.get(Item.SPAWN_EGG, 12)); //Pig
@@ -1167,8 +1143,8 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.SPAWN_EGG, 15)); //Villager
         addCreativeItem(Item.get(Item.SPAWN_EGG, 16)); //Mooshroom
         addCreativeItem(Item.get(Item.SPAWN_EGG, 17)); //Squid
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 19)); //Bat 
-		//addCreativeItem(Item.get(Item.SPAWN_EGG, 20)); //Iron Golem
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 19)); //Bat
+        //addCreativeItem(Item.get(Item.SPAWN_EGG, 20)); //Iron Golem
         //addCreativeItem(Item.get(Item.SPAWN_EGG, 21)); //Snow Golem
         addCreativeItem(Item.get(Item.SPAWN_EGG, 22)); //Ocelot
         addCreativeItem(Item.get(Item.SPAWN_EGG, 23)); //Horse
@@ -1196,7 +1172,7 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.SPAWN_EGG, 49)); //Guardian
         addCreativeItem(Item.get(Item.SPAWN_EGG, 50)); //ElderGuardian
         addCreativeItem(Item.get(Item.SPAWN_EGG, 54)); //Shulker
-        
+
         addCreativeItem(Item.get(Item.FIRE_CHARGE, 0));
         addCreativeItem(Item.get(Item.WOODEN_SWORD));
         addCreativeItem(Item.get(Item.WOODEN_HOE));
@@ -1580,19 +1556,35 @@ public class Item implements Cloneable {
         return items;
     }
 
+    private byte[] writeCompoundTag(CompoundTag tag) {
+        try {
+            return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean hasMeta() {
+        return hasMeta;
+    }
+
+    public boolean canBeActivated() {
+        return false;
+    }
+
     public Item setCompoundTag(CompoundTag tag) {
         this.setNamedTag(tag);
         return this;
+    }
+
+    public byte[] getCompoundTag() {
+        return tags;
     }
 
     public Item setCompoundTag(byte[] tags) {
         this.tags = tags;
         this.cachedNBT = null;
         return this;
-    }
-
-    public byte[] getCompoundTag() {
-        return tags;
     }
 
     public boolean hasCompoundTag() {
@@ -1623,23 +1615,6 @@ public class Item implements Cloneable {
         return this;
     }
 
-    public Item setCustomBlockData(CompoundTag compoundTag) {
-        CompoundTag tags = compoundTag.copy();
-        tags.setName("BlockEntityTag");
-
-        CompoundTag tag;
-        if (!this.hasCompoundTag()) {
-            tag = new CompoundTag();
-        } else {
-            tag = this.getNamedTag();
-        }
-
-        tag.putCompound("BlockEntityTag", tags);
-        this.setNamedTag(tag);
-
-        return this;
-    }
-
     public CompoundTag getCustomBlockData() {
         if (!this.hasCompoundTag()) {
             return null;
@@ -1655,6 +1630,23 @@ public class Item implements Cloneable {
         }
 
         return null;
+    }
+
+    public Item setCustomBlockData(CompoundTag compoundTag) {
+        CompoundTag tags = compoundTag.copy();
+        tags.setName("BlockEntityTag");
+
+        CompoundTag tag;
+        if (!this.hasCompoundTag()) {
+            tag = new CompoundTag();
+        } else {
+            tag = this.getNamedTag();
+        }
+
+        tag.putCompound("BlockEntityTag", tags);
+        this.setNamedTag(tag);
+
+        return this;
     }
 
     public boolean hasEnchantments() {

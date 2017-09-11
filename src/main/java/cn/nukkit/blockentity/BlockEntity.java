@@ -7,6 +7,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.ChunkException;
+import cn.nukkit.utils.MainLogger;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 
@@ -38,13 +39,10 @@ public abstract class BlockEntity extends Position {
     public static final String COMPARATOR = "Comparator";
     public static final String HOPPER = "Hopper";
     public static final String BED = "Bed";
-
-
-    public static long count = 1;
-
+    public static final String BANNER = "Banner";
     private static final Map<String, Class<? extends BlockEntity>> knownBlockEntities = new HashMap<>();
     private static final Map<String, String> shortNames = new HashMap<>();
-
+    public static long count = 1;
     public FullChunk chunk;
     public String name;
     public long id;
@@ -109,7 +107,7 @@ public abstract class BlockEntity extends Position {
 
                     }
                 } catch (Exception e) {
-                    //ignore
+                    MainLogger.getLogger().logException(e);
                 }
 
             }
@@ -126,6 +124,14 @@ public abstract class BlockEntity extends Position {
         knownBlockEntities.put(name, c);
         shortNames.put(c.getSimpleName(), name);
         return true;
+    }
+
+    public static CompoundTag getDefaultNBT(Vector3 pos, String id) {
+        return new CompoundTag("")
+                .putString("id", id)
+                .putInt("x", pos.getFloorX())
+                .putInt("y", pos.getFloorY())
+                .putInt("z", pos.getFloorZ());
     }
 
     public final String getSaveId() {
@@ -149,9 +155,9 @@ public abstract class BlockEntity extends Position {
         tag.remove("x").remove("y").remove("z").remove("id");
         if(tag.getTags().size() > 0){
             return tag;
-        }else{
-            return null;
         }
+
+        return null;
     }
 
     public Block getBlock() {
@@ -184,13 +190,5 @@ public abstract class BlockEntity extends Position {
 
     public String getName() {
         return name;
-    }
-
-    public static CompoundTag getDefaultCompound(Vector3 pos, String id) {
-        return new CompoundTag("")
-                .putString("id", id)
-                .putInt("x", pos.getFloorX())
-                .putInt("y", pos.getFloorY())
-                .putInt("z", pos.getFloorZ());
     }
 }

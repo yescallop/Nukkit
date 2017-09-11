@@ -246,6 +246,10 @@ public class CompoundTag extends Tag implements Cloneable {
         return tags.containsKey(name);
     }
 
+    public int size() {
+        return this.tags.size();
+    }
+
     @Override
     public CompoundTag clone() {
         CompoundTag nbt = new CompoundTag();

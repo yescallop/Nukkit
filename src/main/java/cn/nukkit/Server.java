@@ -85,108 +85,61 @@ public class Server {
     public static final String BROADCAST_CHANNEL_USERS = "nukkit.broadcast.user";
 
     private static Server instance = null;
-
-    private BanList banByName = null;
-
-    private BanList banByIP = null;
-
-    private Config operators = null;
-
-    private Config whitelist = null;
-
-    private boolean isRunning = true;
-
-    private boolean hasStopped = false;
-
-    private PluginManager pluginManager = null;
-
-    private int profilingTickrate = 20;
-
-    private ServerScheduler scheduler = null;
-
-    private int tickCounter;
-
-    private long nextTick;
-
     private final float[] tickAverage = {20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20};
-
     private final float[] useAverage = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    private float maxTick = 20;
-
-    private float maxUse = 0;
-
-    private int sendUsageTicker = 0;
-
-    private boolean dispatchSignals = false;
-
     private final MainLogger logger;
-
     private final CommandReader console;
-
-    private SimpleCommandMap commandMap;
-
-    private CraftingManager craftingManager;
-
-    private ResourcePackManager resourcePackManager;
-
-    private ConsoleCommandSender consoleSender;
-
-    private int maxPlayers;
-
-    private boolean autoSave;
-
-    private RCON rcon;
-
-    private EntityMetadataStore entityMetadata;
-
-    private PlayerMetadataStore playerMetadata;
-
-    private LevelMetadataStore levelMetadata;
-
-    private Network network;
-
-    private boolean networkCompressionAsync = true;
+    private final String filePath;
+    private final String dataPath;
+    private final String pluginPath;
+    private final Set<UUID> uniquePlayers = new HashSet<>();
+    private final Map<String, Player> players = new HashMap<>();
+    private final Map<UUID, Player> playerList = new HashMap<>();
+    private final Map<Integer, String> identifier = new HashMap<>();
+    private final Map<Integer, Level> levels = new HashMap<>();
+    private final ServiceManager serviceManager = new NKServiceManager();
     public int networkCompressionLevel = 7;
-
+    private BanList banByName = null;
+    private BanList banByIP = null;
+    private Config operators = null;
+    private Config whitelist = null;
+    private boolean isRunning = true;
+    private boolean hasStopped = false;
+    private PluginManager pluginManager = null;
+    private int profilingTickrate = 20;
+    private ServerScheduler scheduler = null;
+    private int tickCounter;
+    private long nextTick;
+    private float maxTick = 20;
+    private float maxUse = 0;
+    private int sendUsageTicker = 0;
+    private boolean dispatchSignals = false;
+    private SimpleCommandMap commandMap;
+    private CraftingManager craftingManager;
+    private ResourcePackManager resourcePackManager;
+    private ConsoleCommandSender consoleSender;
+    private int maxPlayers;
+    private boolean autoSave;
+    private RCON rcon;
+    private EntityMetadataStore entityMetadata;
+    private PlayerMetadataStore playerMetadata;
+    private LevelMetadataStore levelMetadata;
+    private Network network;
+    private boolean networkCompressionAsync = true;
     private boolean autoTickRate = true;
     private int autoTickRateLimit = 20;
     private boolean alwaysTickPlayers = false;
     private int baseTickRate = 1;
     private Boolean getAllowFlight = null;
-
     private int autoSaveTicker = 0;
     private int autoSaveTicks = 6000;
-
     private BaseLang baseLang;
-
     private boolean forceLanguage = false;
-
     private UUID serverID;
-
-    private final String filePath;
-    private final String dataPath;
-    private final String pluginPath;
-
-    private final Set<UUID> uniquePlayers = new HashSet<>();
-
     private QueryHandler queryHandler;
-
     private QueryRegenerateEvent queryRegenerateEvent;
-
     private Config properties;
     private Config config;
-
-    private final Map<String, Player> players = new HashMap<>();
-
-    private final Map<UUID, Player> playerList = new HashMap<>();
-
-    private final Map<Integer, String> identifier = new HashMap<>();
-
-    private final Map<Integer, Level> levels = new HashMap<>();
-
-    private final ServiceManager serviceManager = new NKServiceManager();
-
     private Level defaultLevel = null;
 
     private Thread currentThread;
@@ -464,6 +417,93 @@ public class Server {
         this.start();
     }
 
+    public static void broadcastPacket(Collection<Player> players, DataPacket packet) {
+        broadcastPacket(players.stream().toArray(Player[]::new), packet);
+    }
+
+    public static void broadcastPacket(Player[] players, DataPacket packet) {
+        packet.encode();
+        packet.isEncoded = true;
+
+        for (Player player : players) {
+            player.dataPacket(packet);
+        }
+
+        if (packet.encapsulatedPacket != null) {
+            packet.encapsulatedPacket = null;
+        }
+    }
+
+    public static String getGamemodeString(int mode) {
+        switch (mode) {
+            case Player.SURVIVAL:
+                return "%gameMode.survival";
+            case Player.CREATIVE:
+                return "%gameMode.creative";
+            case Player.ADVENTURE:
+                return "%gameMode.adventure";
+            case Player.SPECTATOR:
+                return "%gameMode.spectator";
+        }
+        return "UNKNOWN";
+    }
+
+    public static int getGamemodeFromString(String str) {
+        switch (str.trim().toLowerCase()) {
+            case "0":
+            case "survival":
+            case "s":
+                return Player.SURVIVAL;
+
+            case "1":
+            case "creative":
+            case "c":
+                return Player.CREATIVE;
+
+            case "2":
+            case "adventure":
+            case "a":
+                return Player.ADVENTURE;
+
+            case "3":
+            case "spectator":
+            case "spc":
+            case "view":
+            case "v":
+                return Player.SPECTATOR;
+        }
+        return -1;
+    }
+
+    public static int getDifficultyFromString(String str) {
+        switch (str.trim().toLowerCase()) {
+            case "0":
+            case "peaceful":
+            case "p":
+                return 0;
+
+            case "1":
+            case "easy":
+            case "e":
+                return 1;
+
+            case "2":
+            case "normal":
+            case "n":
+                return 2;
+
+            case "3":
+            case "hard":
+            case "h":
+                return 3;
+        }
+        return -1;
+    }
+
+    public static Server getInstance() {
+        return instance;
+    }
+
     public int broadcastMessage(String message) {
         return this.broadcast(message, BROADCAST_CHANNEL_USERS);
     }
@@ -530,24 +570,6 @@ public class Server {
         }
 
         return recipients.size();
-    }
-
-
-    public static void broadcastPacket(Collection<Player> players, DataPacket packet) {
-        broadcastPacket(players.stream().toArray(Player[]::new), packet);
-    }
-
-    public static void broadcastPacket(Player[] players, DataPacket packet) {
-        packet.encode();
-        packet.isEncoded = true;
-
-        for (Player player : players) {
-            player.dataPacket(packet);
-        }
-
-        if (packet.encapsulatedPacket != null) {
-            packet.encapsulatedPacket = null;
-        }
     }
 
     public void batchPackets(Player[] players, DataPacket[] packets) {
@@ -1189,72 +1211,6 @@ public class Server {
 
     public boolean getForceGamemode() {
         return this.getPropertyBoolean("force-gamemode", false);
-    }
-
-    public static String getGamemodeString(int mode) {
-        switch (mode) {
-            case Player.SURVIVAL:
-                return "%gameMode.survival";
-            case Player.CREATIVE:
-                return "%gameMode.creative";
-            case Player.ADVENTURE:
-                return "%gameMode.adventure";
-            case Player.SPECTATOR:
-                return "%gameMode.spectator";
-        }
-        return "UNKNOWN";
-    }
-
-    public static int getGamemodeFromString(String str) {
-        switch (str.trim().toLowerCase()) {
-            case "0":
-            case "survival":
-            case "s":
-                return Player.SURVIVAL;
-
-            case "1":
-            case "creative":
-            case "c":
-                return Player.CREATIVE;
-
-            case "2":
-            case "adventure":
-            case "a":
-                return Player.ADVENTURE;
-
-            case "3":
-            case "spectator":
-            case "spc":
-            case "view":
-            case "v":
-                return Player.SPECTATOR;
-        }
-        return -1;
-    }
-
-    public static int getDifficultyFromString(String str) {
-        switch (str.trim().toLowerCase()) {
-            case "0":
-            case "peaceful":
-            case "p":
-                return 0;
-
-            case "1":
-            case "easy":
-            case "e":
-                return 1;
-
-            case "2":
-            case "normal":
-            case "n":
-                return 2;
-
-            case "3":
-            case "hard":
-            case "h":
-                return 3;
-        }
-        return -1;
     }
 
     public int getDifficulty() {
@@ -1986,10 +1942,7 @@ public class Server {
         BlockEntity.registerBlockEntity(BlockEntity.COMPARATOR, BlockEntityComparator.class);
         BlockEntity.registerBlockEntity(BlockEntity.HOPPER, BlockEntityHopper.class);
         BlockEntity.registerBlockEntity(BlockEntity.BED, BlockEntityBed.class);
-    }
-
-    public static Server getInstance() {
-        return instance;
+        BlockEntity.registerBlockEntity(BlockEntity.BANNER, BlockEntityBanner.class);
     }
 
 }
